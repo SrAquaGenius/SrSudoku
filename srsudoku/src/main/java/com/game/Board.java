@@ -8,24 +8,24 @@ public class Board {
 	private Coord _maxCoord;
 	private ArrayList<Cell> _matrix;
 
-	public Board(int size) {
+	public Board() {}
+
+	public void create(int size, String[] inputGrid) {
+
 		this._size = size;
 		_maxCoord = new Coord(this._size-1, this._size-1);
 		_matrix = new ArrayList<Cell>(_size*_size);
-	}
-
-	public void initCells() {
-
-		String textInput = "92..45..." + "..8.7.249" + ".4....6.1"
-					+ ".6951.3.2" + "281.3...5" + "7.......6"
-					+ ".7..59..." + "69.3....." + "51376.8.4";
-
-		String[] input = textInput.split("");
 	
-		for (int i = 0; i < _size*_size; i++) {
-			_matrix.add(i, new Cell(indexToNewCoord(i, _size), input[i]));
+		for (int i = 0; i < _size; i++) {
+			String[] input = inputGrid[i].split("");
+
+			for (int j = 0; j < _size; j++) {
+				int index = i*_size + j;
+				Coord coord = indexToNewCoord(index, _size);
+				_matrix.add(index, new Cell(coord, input[j]));
+			}
 		}
-	} 
+	}
 
 	public Coord getMaxCoord() { return _maxCoord; }
 	public void setMaxCoord(Coord maxCoord) { this._maxCoord = maxCoord; }

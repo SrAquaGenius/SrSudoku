@@ -1,12 +1,8 @@
 package com.game;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Set;
 
 public class SudokuState {
 
@@ -15,8 +11,8 @@ public class SudokuState {
 	private int _id;
 	private Board _board;
 
-	public SudokuState(int size) {
-		_board = new Board(size);
+	public SudokuState() {
+		this._board = new Board();
 		this._id = _STATE_ID;
 		_STATE_ID += 1;
 	}
@@ -27,10 +23,59 @@ public class SudokuState {
 	public int getId() { return _id; }
 	public void setId(int id) { this._id = id; }
 
-	public void parseInput() {
-		_board.initCells();
+	/* ----------------------- Parse Input function ------------------------ */
+	public void parseInput(String filePath) {
+
+		try {
+
+			BufferedReader reader = new BufferedReader(new FileReader(filePath));
+
+			// Read the first line which contains the number of rows
+			String firstLine = reader.readLine();
+			if (firstLine == null) {
+				reader.close();
+				throw new IllegalArgumentException("File is empty.");
+			}
+
+			int dim;
+			try {
+				dim = Integer.parseInt(firstLine.trim());
+			} catch (NumberFormatException e) {
+				reader.close();
+				throw new IllegalArgumentException(Error.invalidFirstLine());
+			}
+
+			// Read the grid lines
+			String[] grid = new String[dim];
+			for (int i = 0; i < dim; i++) {
+				String line = reader.readLine();
+				if (line == null) {
+					reader.close();
+					throw new IllegalArgumentException(Error.notEnoughLines());
+				}
+				grid[i] = line;
+			}
+
+			// Check if there are extra lines beyond the expected number
+			if (reader.readLine() != null) {
+				reader.close();
+				throw new IllegalArgumentException(Error.tooManyLines());
+			}
+
+			reader.close();
+			_board.create(dim, grid);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/* -------------------------- Solve function --------------------------- */
+	public void solve() {
+		App.debug("«Solve function»");
+	}
+
+	/* ------------------------ To String function ------------------------- */
 	@Override
 	public String toString() {
 		return "id: " + getId() + "\n" + getBoard();
