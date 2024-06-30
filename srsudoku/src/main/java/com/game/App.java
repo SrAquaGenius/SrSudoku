@@ -2,6 +2,8 @@ package com.game;
 
 import java.io.File;
 
+import com.game.Game.Game;
+
 public class App {
 	public static void main(String[] args) {
 

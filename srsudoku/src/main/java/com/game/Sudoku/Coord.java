@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Sudoku;
 
 public class Coord {
 
@@ -19,6 +19,11 @@ public class Coord {
 	public boolean isEqual(Coord other) {
 		return this.getCol() == other.getCol() &&
 			this.getRow() == other.getRow();
+	}
+
+	public boolean isValid(int size) {
+		return this.getCol() > 0 && this.getCol() < size
+			&& this.getRow() > 0 && this.getRow() < size;
 	}
 
 	@Override

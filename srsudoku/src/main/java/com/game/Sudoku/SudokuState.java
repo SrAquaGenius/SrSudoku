@@ -1,8 +1,11 @@
-package com.game;
+package com.game.Sudoku;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+import com.game.App;
+import com.game.Error;
 
 public class SudokuState {
 

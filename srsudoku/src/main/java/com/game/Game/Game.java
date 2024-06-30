@@ -1,6 +1,10 @@
-package com.game;
+package com.game.Game;
 
 import java.util.Scanner;
+
+import com.game.Solver.*;
+import com.game.Sudoku.Sudoku;
+import com.game.Sudoku.SudokuState;
 
 public class Game {
 
@@ -31,8 +35,11 @@ public class Game {
 				return;
 			}
 			else if (Integer.parseInt(userInput) == 1) {
-				_ss.solve();
-				System.out.println(_ss);
+				
+				Sudoku game = new Sudoku(_ss);
+				Solver solver = new DepthFirstTreeSearch(game);
+				solver.solve();
+				//System.out.println(solver.getGame());
 				scanner.close();
 				return;
 			}

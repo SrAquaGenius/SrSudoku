@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Sudoku;
 
 public class Cell {
 
