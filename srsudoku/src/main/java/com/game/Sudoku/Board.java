@@ -1,11 +1,14 @@
 package com.game.Sudoku;
 
+import com.game.App;
 import com.game.Options.BoardOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
+
+	public static final int BOX_SIZE = 3;
 
 	public boolean showCoord = false;
 
@@ -102,10 +105,21 @@ public class Board {
 	}
 
 	public int getBoxIndex(int boxNumber) {
-		if (boxNumber < 0) { return -1; }
-		if (boxNumber <= 3) { return boxNumber - 1; }
-		if (boxNumber <= 6) { return boxNumber - 1 + 3 * getSize(); }
-		if (boxNumber <= 9) { return boxNumber - 1 + 6 * getSize(); }
+
+		int TWO_BOX_SIZE = 2 * BOX_SIZE;
+
+		if (boxNumber <= 0) { return -1; }
+
+		if (boxNumber <= BOX_SIZE * 1) {
+			return BOX_SIZE * (boxNumber - 1);
+		}
+		if (boxNumber <= BOX_SIZE * 2) {
+			return BOX_SIZE * (boxNumber % BOX_SIZE - 1) + BOX_SIZE * getSize();
+		}
+		if (boxNumber <= BOX_SIZE * 3) {
+			return BOX_SIZE * (boxNumber % TWO_BOX_SIZE - 1) + TWO_BOX_SIZE * getSize();
+		}
+
 		else { return -1; }
 	}
 
@@ -196,19 +210,118 @@ public class Board {
 		return true;
 	}
 
-	/* ------------------------- Actions function -------------------------- */
-	// public void nextAction() {
-	// 	for (int d = 0; d < getSize(); d++) {
-	// 		if (addDigit(d + 1)) return;
-	// 	}
-	// }
+	/* --------------- Interation and propagation functions ---------------- */
+	public void doIteration() {
+		for (int m = 0; m < getSize()*getSize() - 1; m++) {
+			Cell cell = _matrix.get(m);
+
+			// App.debug(cell.toString());
+
+			if (!cell.isFilled()) { continue; }
+
+			propagateDigit(cell);
+		}
+	}
+
+	public void propagateDigit(Cell cell) {
+		// App.debug("Propagate digit: " + cell);
+
+		Coord coord = cell.getCoord();
+		List<Cell> cellsVisited = new ArrayList<Cell>();
+
+		propagateInBox(cellsVisited, getBoxNumber(coord), cell.getDigit());
+		propagateInRow(cellsVisited, coord.getRow(), cell.getDigit());
+		propagateInCol(cellsVisited, coord.getCol(), cell.getDigit());
+	}
+
+	public void propagateInBox(List<Cell> cellsVisited, int box, int digit) {
+		// App.debug("Propagate in box (box: " + box + ", digit: " + digit + "):");
+
+		if (box == 0) return;
+
+		int base = getBoxIndex(box);
+		if (base < 0) return;
+
+		int index;
+
+		for (int i = 0; i < BOX_SIZE; i ++) {
+			for (int j = 0; j < BOX_SIZE; j++) {
+
+				index = base + i + j * getSize();
+				Cell testCell = getMatrix().get(index);
+
+				if (testCell.isIn(cellsVisited)) continue;
+
+				if (!testCell.isHint() && !testCell.isFilled()) {
+					testCell.removeValidDigit(digit);
+					cellsVisited.add(testCell);
+				}
+			}
+		}
+	}
+
+	public void propagateInRow(List<Cell> cellsVisited, int row, int digit) {
+		// App.debug("Propagate int row (row: " + row + ", digit: " + digit + "):");
+
+		for (int i = 0; i < getSize(); i++) {
+
+			Cell testCell = getMatrix().get(row * getSize() + i);
+			if (testCell.isIn(cellsVisited)) continue;
+
+			if (!testCell.isFilled()) {
+				testCell.removeValidDigit(digit);
+				cellsVisited.add(testCell);
+			}
+		}
+	}
+
+	public void propagateInCol(List<Cell> cellsVisited, int col, int digit) {
+		// App.debug("Propagate in col (col: " + col + ", digit: " + digit + "):");
+
+		for (int j = 0; j < getSize(); j++) {
+
+			Cell testCell = getMatrix().get(col + j * getSize());
+			if (testCell.isIn(cellsVisited)) continue;
+
+			if (!testCell.isFilled()) {
+				testCell.removeValidDigit(digit);
+				cellsVisited.add(testCell);
+			}
+		}
+	}
+
+	/* ----------------------- Next Action function ------------------------ */
+	public boolean nextAction() {
+		for (int m = 0; m < getSize()*getSize() - 1; m++) {
+			Cell cell = _matrix.get(m);
+
+			// App.debug(cell.toString());
+
+			if (cell.isFilled()) { continue; }
+			if (cell.getValidDigits() == null) { continue; }
+
+			List<Integer> digits = cell.getValidDigits();
+
+			if (digits.size() == 1) {
+
+				App.debug(cell.toString() + " " + digits.get(0));
+
+				cell.updateDigit();
+				_matrix.set(m, cell);
+				propagateDigit(cell);
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/* ------------------------ To String function ------------------------- */
 	@Override
 	public String toString() {
 		String text = "";
 
-		for (int i = 0; i< _size*_size; i++) {
+		for (int i = 0; i < _size*_size; i++) {
 			if (i != 0 && i % _size == 0)
 				text += '\n';
 
@@ -219,6 +332,19 @@ public class Board {
 				text += "---+---+---\n";
 
 			text += _matrix.get(i).print(showCoord);
+		}
+
+		return text;
+	}
+
+	public String print() {
+
+		String text = "\nPrint board:\n";
+
+		for (int i = 0; i < _size*_size; i++) {
+
+			Cell cell = _matrix.get(i);
+			text += cell.print(true) + " - " + cell.getValidDigits() + "\n";
 		}
 
 		return text;

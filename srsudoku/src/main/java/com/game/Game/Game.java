@@ -21,6 +21,7 @@ public class Game {
 		_ss.parseInput(filePath);
 
 		System.out.println(_ss);
+		System.out.println(_ss.getBoard().print());
 
 		Scanner scanner = new Scanner(System.in);
 
@@ -36,14 +37,19 @@ public class Game {
 			}
 			else if (Integer.parseInt(userInput) == 1) {
 
-				// _ss.nextAction();
-				System.out.println(_ss);
+				boolean eval = true;
+
+				while (eval) {
+					eval = _ss.nextAction();
+					System.out.println(_ss);
+				}
+				
+				scanner.close();
+				return;
 			}
 			else {
 				System.out.print("[Invalid] Type a valid option:\n0 - exit, 1 - auto solve\nChoose one: ");
 			}
 		}
-		
-
 	}
 }

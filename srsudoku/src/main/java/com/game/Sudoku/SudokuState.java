@@ -68,15 +68,17 @@ public class SudokuState {
 
 			reader.close();
 			_board.create(dim, grid);
+			_board.doIteration();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// public void nextAction() {
-	// 	getBoard().nextAction();
-	// }
+	public boolean nextAction() {
+		_id += 1;
+		return getBoard().nextAction();
+	}
 
 	/* -------------------------- Solve function --------------------------- */
 	public void solve() {
@@ -86,6 +88,6 @@ public class SudokuState {
 	/* ------------------------ To String function ------------------------- */
 	@Override
 	public String toString() {
-		return "id: " + getId() + "\n" + getBoard();
+		return "id: " + getId() + "\n" + getBoard() + "\n";
 	}
 }
