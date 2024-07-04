@@ -24,10 +24,10 @@ public class Game {
 
 		Scanner scanner = new Scanner(System.in);
 
-		System.out.print("[Next action] 0 - exit, 1 - auto solve\nChoose one: ");
 		String userInput;
 
 		while (true) {
+			System.out.print("[Next action] 0 - exit, 1 - auto solve\nChoose one: ");
 			userInput = scanner.nextLine();
 
 			if (Integer.parseInt(userInput) == 0) {
@@ -35,13 +35,9 @@ public class Game {
 				return;
 			}
 			else if (Integer.parseInt(userInput) == 1) {
-				
-				Sudoku game = new Sudoku(_ss);
-				Solver solver = new DepthFirstTreeSearch(game);
-				solver.solve();
-				//System.out.println(solver.getGame());
-				scanner.close();
-				return;
+
+				// _ss.nextAction();
+				System.out.println(_ss);
 			}
 			else {
 				System.out.print("[Invalid] Type a valid option:\n0 - exit, 1 - auto solve\nChoose one: ");

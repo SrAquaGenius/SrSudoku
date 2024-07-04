@@ -1,32 +1,71 @@
 package com.game.Sudoku;
 
+import com.game.Options.CellOptions;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cell {
 
-	public boolean showCoord = false;
-
 	private Coord _coord;
-	private String _content;
-	private Object _options;
 
-	public Cell(Coord coord, String content) {
+	private boolean _isHint = false;
+	private boolean _isFilled = false;
+	private int _digit = 0;
+
+	private List<Integer> _validDigits = null;
+
+	private CellOptions _options;
+
+	public Cell(Coord coord, String content, int size) {
 		this._coord = coord;
-		this._content = content;
+
+		int digit;
+		try {
+			digit = Integer.parseInt(content);
+			_digit = digit;
+			_isHint = true;
+			_isFilled = true;
+		}
+		catch (NumberFormatException e) {
+			_validDigits = new ArrayList<Integer>(size);
+
+			for (int i = 1; i <= size; i++)
+				_validDigits.add(i);
+		}
 	}
 
+	/* ------------------- Getters and setters functions ------------------- */
 	public Coord getCoord() { return _coord; }
 	public void setCoord(Coord coord) { this._coord = coord; }
 
-	public String getContent() { return _content; }
-	public void setContent(String content) { this._content = content; }
+	public boolean isHint() { return _isHint; }
+	public boolean isFilled() { return _isFilled; }
 
-	public Object getOptions() { return _options; }
-	public void setOptions(Object options) { this._options = options; }
+	public int getDigit() { return _digit; }
+	public void setDigit(int digit) { this._digit = digit; }
 
-	@Override
-	public String toString() {
+	public CellOptions getOptions() { return _options; }
+	public void setOptions(CellOptions options) { this._options = options; }
+
+	public String getContent() {
+		if (isFilled())
+			return "" + getDigit();
+
+		return ".";
+	}
+
+	/* -------------------------- Print function --------------------------- */
+	public String print(boolean showCoord) {
 		if (showCoord)
 			return getCoord() + ": " + getContent();
-
+	
 		return getContent();
+	}
+
+	/* ------------------------ To String function ------------------------- */
+	@Override
+	public String toString() {
+		return getCoord() + ": " + getContent();
 	}
 }

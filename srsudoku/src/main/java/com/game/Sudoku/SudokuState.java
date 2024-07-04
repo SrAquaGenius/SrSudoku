@@ -20,6 +20,7 @@ public class SudokuState {
 		_STATE_ID += 1;
 	}
 
+	/* ------------------- Getters and setters functions ------------------- */
 	public Board getBoard() { return _board; }
 	public void setBoard(Board board) { this._board = board; }
 
@@ -72,6 +73,10 @@ public class SudokuState {
 			e.printStackTrace();
 		}
 	}
+
+	// public void nextAction() {
+	// 	getBoard().nextAction();
+	// }
 
 	/* -------------------------- Solve function --------------------------- */
 	public void solve() {
