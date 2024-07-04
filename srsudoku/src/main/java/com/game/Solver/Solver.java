@@ -4,14 +4,14 @@ import com.game.Sudoku.Sudoku;
 
 public abstract class Solver {
 
-	private Sudoku _game;
+	private Sudoku _sudoku;
 
-	public Solver(Sudoku game) {
-		this._game = game;
+	public Solver(Sudoku sudoku) {
+		this._sudoku = sudoku;
 	}
 
-	public Sudoku getGame() { return _game; }
-	public void setGame(Sudoku game) { this._game = game;}
+	public Sudoku getGame() { return _sudoku; }
+	public void setGame(Sudoku sudoku) { this._sudoku = sudoku;}
 
 	public abstract void solve();
 }
