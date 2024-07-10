@@ -2,8 +2,10 @@ package com.game.Game;
 
 import java.util.Scanner;
 
-import com.game.Solver.*;
-import com.game.Sudoku.Sudoku;
+import com.game.App;
+import com.game.Message;
+// import com.game.Solver.*;
+// import com.game.Sudoku.Sudoku;
 import com.game.Sudoku.SudokuState;
 
 public class Game {
@@ -20,35 +22,84 @@ public class Game {
 		_ss = new SudokuState();
 		_ss.parseInput(filePath);
 
-		System.out.println(_ss);
-		System.out.println(_ss.getBoard().print());
+		Message.initialBoard(_ss);
+		
+		App.debug(_ss.getBoard().print());
 
-		Scanner scanner = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 
 		String userInput;
 
 		while (true) {
-			System.out.print("[Next action] 0 - exit, 1 - auto solve\nChoose one: ");
-			userInput = scanner.nextLine();
+			Message.nextAction();
+			userInput = sc.nextLine();
 
-			if (Integer.parseInt(userInput) == 0) {
-				scanner.close();
-				return;
+			try {
+				if (Integer.parseInt(userInput) == 0)
+					break;
+				else if (Integer.parseInt(userInput) == 1)
+					manualAction(sc);
+				else if (Integer.parseInt(userInput) == 2)
+					autoAction(sc);
+				else if (Integer.parseInt(userInput) == 3)
+					Message.board(_ss);
+			
+				else Message.invalidOption();
 			}
-			else if (Integer.parseInt(userInput) == 1) {
 
-				boolean eval = true;
-
-				while (eval) {
-					eval = _ss.nextAction();
-					System.out.println(_ss);
-				}
-				
-				scanner.close();
-				return;
+			catch (NumberFormatException e) {
+				Message.invalidInteger();
 			}
-			else {
-				System.out.print("[Invalid] Type a valid option:\n0 - exit, 1 - auto solve\nChoose one: ");
+		}
+
+		sc.close();
+	}
+
+	public void manualAction(Scanner scanner) {
+		
+		String manualInput;
+		
+		while (true) {
+			Message.manualAction();
+			manualInput = scanner.nextLine();
+
+			try {
+				if (Integer.parseInt(manualInput) == 0)
+					break;
+				else if (Integer.parseInt(manualInput) == 1)
+					_ss.addPenDigit(scanner);
+				else if (Integer.parseInt(manualInput) == 2)
+					_ss.delPenDigit(scanner);
+
+				else Message.invalidOption();
+			}
+
+			catch (NumberFormatException e) {
+				Message.invalidInteger();
+			}
+		}
+	}
+
+	public void autoAction(Scanner scanner) {
+		String autoInput;
+		
+		while (true) {
+			Message.autoAction();
+			autoInput = scanner.nextLine();
+
+			try {
+				if (Integer.parseInt(autoInput) == 0)
+					break;
+				else if (Integer.parseInt(autoInput) == 1)
+					_ss.nextIteration();
+				else if (Integer.parseInt(autoInput) == 2)
+					_ss.fullGeneration();
+
+				else Message.invalidOption();
+			}
+
+			catch (NumberFormatException e) {
+				Message.invalidInteger();
 			}
 		}
 	}

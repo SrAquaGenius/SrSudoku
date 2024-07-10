@@ -290,8 +290,9 @@ public class Board {
 		}
 	}
 
-	/* ----------------------- Next Action function ------------------------ */
-	public boolean nextAction() {
+	/* --------------------- Next Iteraction function ---------------------- */
+	public boolean nextIteration() {
+
 		for (int m = 0; m < getSize()*getSize() - 1; m++) {
 			Cell cell = _matrix.get(m);
 

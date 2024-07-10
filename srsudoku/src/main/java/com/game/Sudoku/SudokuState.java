@@ -3,6 +3,7 @@ package com.game.Sudoku;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 import com.game.App;
 import com.game.Error;
@@ -75,9 +76,28 @@ public class SudokuState {
 		}
 	}
 
-	public boolean nextAction() {
+	/* ---------------------- Manual Action functions ---------------------- */
+	public void addPenDigit(Scanner scanner) {
 		_id += 1;
-		return getBoard().nextAction();
+	}
+
+	public void delPenDigit(Scanner scanner) {
+		_id += 1;
+	}
+
+	/* ----------------------- Auto Action functions ----------------------- */
+	public void nextIteration() {
+		_id += 1;
+		getBoard().nextIteration();
+	}
+
+	public void fullGeneration() {
+		boolean eval = true;
+
+		while (eval) {
+			_id += 1;
+			eval = getBoard().nextIteration();
+		}
 	}
 
 	/* -------------------------- Solve function --------------------------- */
