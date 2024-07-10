@@ -4,9 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.game.App;
 import com.game.Error;
+import com.game.Message;
+import com.game.Regex;
 
 public class SudokuState {
 
@@ -78,20 +82,74 @@ public class SudokuState {
 
 	/* ---------------------- Manual Action functions ---------------------- */
 	public void addPenDigit(Scanner scanner) {
-		_id += 1;
+		App.debug("[Add pen digit]");
+		
+		String addInput;
+		
+		while (true) {
+			Message.addPenDigitGuide();
+			addInput = scanner.nextLine();
+
+			Pattern pattern = Pattern.compile(Regex.coordDigit());
+			Matcher matcher = pattern.matcher(addInput);
+
+			if (matcher.matches()) {
+				int x = Integer.parseInt(matcher.group(1));
+				int y = Integer.parseInt(matcher.group(2));
+				int value = Integer.parseInt(matcher.group(3));
+
+				App.debug("Coordinates: (" + x + "," + y + ")");
+				App.debug("Value: " + value);
+
+				break;
+			}
+			
+			else if (Integer.parseInt(addInput) == 0)
+				return;
+			else Message.invalidOption();
+		}
+		
+		// _id += 1;
 	}
 
 	public void delPenDigit(Scanner scanner) {
-		_id += 1;
+		App.debug("[Delete pen digit]");
+
+		String delInput;
+		
+		while (true) {
+			Message.delPenDigitGuide();
+			delInput = scanner.nextLine();
+
+			Pattern pattern = Pattern.compile(Regex.coord());
+			Matcher matcher = pattern.matcher(delInput);
+
+			if (matcher.matches()) {
+				int x = Integer.parseInt(matcher.group(1));
+				int y = Integer.parseInt(matcher.group(2));
+
+				App.debug("Coordinates: (" + x + "," + y + ")");
+
+				break;
+			}
+
+			else if (Integer.parseInt(delInput) == 0)
+				return;
+			else Message.invalidOption();
+		}
+
+		// _id += 1;
 	}
 
 	/* ----------------------- Auto Action functions ----------------------- */
 	public void nextIteration() {
+		App.debug("[Next iteration]");
 		_id += 1;
 		getBoard().nextIteration();
 	}
 
 	public void fullGeneration() {
+		App.debug("[Full Generation]");
 		boolean eval = true;
 
 		while (eval) {
