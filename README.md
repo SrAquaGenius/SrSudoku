@@ -1,5 +1,5 @@
 # SrSudoku
-Creating a app for playing sudoku (with computer solver, I hope)
+Creating a console log based sudoku app 
 
 ## Compilling and running
 ```bash
