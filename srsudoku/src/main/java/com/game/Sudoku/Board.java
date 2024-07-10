@@ -1,6 +1,8 @@
 package com.game.Sudoku;
 
 import com.game.App;
+import com.game.Error;
+import com.game.Message;
 import com.game.Options.BoardOptions;
 
 import java.util.ArrayList;
@@ -315,6 +317,31 @@ public class Board {
 		}
 
 		return false;
+	}
+
+	/* ----------------------- Add Digit In function ----------------------- */
+	public boolean addDigitIn(int digit, int row, int col) {
+		App.debug("[Add digit in]");
+
+		Coord coord = new Coord(row, col);
+		if (!coord.isValid(getSize())) {
+			Error.invalidCoord(coord, getSize());
+			return false;
+		}
+
+		Cell cell = _matrix.get(coordToIndex(coord));
+		if (cell.isHint()) {
+			Message.overwriteHintCell();
+			return false;
+		}
+
+		if (cell.isFilled()) {
+			Message.overwriteFilledCell();
+			return true;
+		}
+
+
+		return true;
 	}
 
 	/* ------------------------ To String function ------------------------- */

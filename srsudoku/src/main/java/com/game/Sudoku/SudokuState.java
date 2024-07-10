@@ -85,6 +85,8 @@ public class SudokuState {
 		App.debug("[Add pen digit]");
 		
 		String addInput;
+
+		int x, y, value;
 		
 		while (true) {
 			Message.addPenDigitGuide();
@@ -93,23 +95,31 @@ public class SudokuState {
 			Pattern pattern = Pattern.compile(Regex.coordDigit());
 			Matcher matcher = pattern.matcher(addInput);
 
-			if (matcher.matches()) {
-				int x = Integer.parseInt(matcher.group(1));
-				int y = Integer.parseInt(matcher.group(2));
-				int value = Integer.parseInt(matcher.group(3));
-
-				App.debug("Coordinates: (" + x + "," + y + ")");
-				App.debug("Value: " + value);
-
-				break;
+			try {
+				if (matcher.matches()) {
+					x = Integer.parseInt(matcher.group(1));
+					y = Integer.parseInt(matcher.group(2));
+					value = Integer.parseInt(matcher.group(3));
+	
+					App.debug("Coordinates: (" + x + "," + y + ")");
+					App.debug("Value: " + value);
+	
+					break;
+				}
+				
+				else if (Integer.parseInt(addInput) == 0)
+					return;
+				else Error.invalidPattern();
 			}
-			
-			else if (Integer.parseInt(addInput) == 0)
-				return;
-			else Message.invalidOption();
+
+			catch (NumberFormatException e) {
+				Error.invalidPattern();
+			}
 		}
-		
-		// _id += 1;
+
+		if (getBoard().addDigitIn(value, x, y)) {
+			_id += 1;
+		}
 	}
 
 	public void delPenDigit(Scanner scanner) {
@@ -124,18 +134,23 @@ public class SudokuState {
 			Pattern pattern = Pattern.compile(Regex.coord());
 			Matcher matcher = pattern.matcher(delInput);
 
-			if (matcher.matches()) {
-				int x = Integer.parseInt(matcher.group(1));
-				int y = Integer.parseInt(matcher.group(2));
-
-				App.debug("Coordinates: (" + x + "," + y + ")");
-
-				break;
+			try {
+				if (matcher.matches()) {
+					int x = Integer.parseInt(matcher.group(1));
+					int y = Integer.parseInt(matcher.group(2));
+	
+					App.debug("Coordinates: (" + x + "," + y + ")");
+					break;
+				}
+	
+				else if (Integer.parseInt(delInput) == 0)
+					return;
+				else Error.invalidPattern();
 			}
 
-			else if (Integer.parseInt(delInput) == 0)
-				return;
-			else Message.invalidOption();
+			catch (NumberFormatException e) {
+				Error.invalidPattern();
+			}			
 		}
 
 		// _id += 1;

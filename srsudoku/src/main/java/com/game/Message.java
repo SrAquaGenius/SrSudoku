@@ -6,20 +6,12 @@ public class Message {
 
 	public static void initialBoard(SudokuState ss) {
 		System.out.print("[Initial board] ");
-		System.out.println(ss);
+		System.out.print(ss);
 	}
 
 	public static void board(SudokuState ss) {
 		System.out.print("[Board] ");
-		System.out.println(ss);
-	}
-
-	public static void invalidOption() {
-		System.out.print("[Invalid] Type a valid option!\n");
-	}
-
-	public static void invalidInteger() {
-		System.out.print("[Invalid] Type a valid integer!\n");
+		System.out.print(ss);
 	}
 
 	public static void nextAction() {
@@ -48,5 +40,13 @@ public class Message {
 	public static void delPenDigitGuide() {
 		System.out.print("[Delete pen digit]\n  type <coord>," + //
 						 " eg.: (1,3)\n  0 - cancel\n: ");
+	}
+
+	public static void overwriteHintCell() {
+		System.out.print("");
+	}
+
+	public static void overwriteFilledCell() {
+		System.out.print("");
 	}
 }

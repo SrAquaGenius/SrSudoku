@@ -1,5 +1,7 @@
 package com.game;
 
+import com.game.Sudoku.Coord;
+
 public class Error {
 
 	public static String invalidFirstLine() {
@@ -16,5 +18,23 @@ public class Error {
 
 	public static String fileNotFound(String fileName) {
 		return "File not found: " + fileName;
+	}
+
+	/* --------------------------------------------------------------------- */
+	public static void invalidOption() {
+		System.out.print("[Error] Type a valid option!\n");
+	}
+
+	public static void invalidInteger() {
+		System.out.print("[Error] Type a valid integer!\n");
+	}
+
+	public static void invalidPattern() {
+		System.out.print("[Error] Type a valid pattern!\n");
+	}
+
+	public static void invalidCoord(Coord coord, int size) {
+		System.out.print("[Error] Coordinate " + coord + //
+						 " is invalid for size " + size);
 	}
 }

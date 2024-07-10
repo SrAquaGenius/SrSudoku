@@ -3,10 +3,13 @@ package com.game.Game;
 import java.util.Scanner;
 
 import com.game.App;
+import com.game.Error;
 import com.game.Message;
+
+import com.game.Sudoku.SudokuState;
+
 // import com.game.Solver.*;
 // import com.game.Sudoku.Sudoku;
-import com.game.Sudoku.SudokuState;
 
 public class Game {
 
@@ -44,11 +47,11 @@ public class Game {
 				else if (Integer.parseInt(userInput) == 3)
 					Message.board(_ss);
 			
-				else Message.invalidOption();
+				else Error.invalidOption();
 			}
 
 			catch (NumberFormatException e) {
-				Message.invalidInteger();
+				Error.invalidInteger();
 			}
 		}
 
@@ -71,11 +74,11 @@ public class Game {
 				else if (Integer.parseInt(manualInput) == 2)
 					_ss.delPenDigit(scanner);
 
-				else Message.invalidOption();
+				else Error.invalidOption();
 			}
 
 			catch (NumberFormatException e) {
-				Message.invalidInteger();
+				Error.invalidInteger();
 			}
 		}
 	}
@@ -95,11 +98,11 @@ public class Game {
 				else if (Integer.parseInt(autoInput) == 2)
 					_ss.fullGeneration();
 
-				else Message.invalidOption();
+				else Error.invalidOption();
 			}
 
 			catch (NumberFormatException e) {
-				Message.invalidInteger();
+				Error.invalidInteger();
 			}
 		}
 	}
