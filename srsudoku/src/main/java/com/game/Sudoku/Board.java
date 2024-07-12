@@ -2,7 +2,8 @@ package com.game.Sudoku;
 
 import com.game.App;
 import com.game.Error;
-import com.game.Message;
+import com.game.Warning;
+
 import com.game.Options.BoardOptions;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class Board {
 			for (int j = 0; j < _size; j++) {
 				int index = i*_size + j;
 				Coord coord = indexToNewCoord(index, _size);
-				_matrix.add(index, new Cell(coord, input[j], _size));
+				_matrix.add(index, new Cell(coord, input[j], _size, true));
 
 				try {
 					int digitIndex = Integer.parseInt(input[j]) - 1;
@@ -320,8 +321,8 @@ public class Board {
 	}
 
 	/* ----------------------- Add Digit In function ----------------------- */
-	public boolean addDigitIn(int digit, int row, int col) {
-		App.debug("[Add digit in]");
+	public boolean addPenDigit(int digit, int row, int col) {
+		App.debug("[Board, Add pen digit]");
 
 		Coord coord = new Coord(row, col);
 		if (!coord.isValid(getSize())) {
@@ -329,18 +330,47 @@ public class Board {
 			return false;
 		}
 
-		Cell cell = _matrix.get(coordToIndex(coord));
-		if (cell.isHint()) {
-			Message.overwriteHintCell();
+		int index = coordToIndex(coord);
+		Cell oldCell = _matrix.get(index);
+
+		if (oldCell.isHint()) {
+			Error.overwriteHintCell(oldCell);
 			return false;
 		}
 
-		if (cell.isFilled()) {
-			Message.overwriteFilledCell();
+		if (oldCell.isFilled()) {
+			Warning.overwriteFilledCell(oldCell);
+		}
+		
+		Cell newCell = new Cell(coord, "" + digit, getSize(), false);
+		_matrix.set(index, newCell);
+		return true;
+	}
+
+	public boolean delPenDigit(int row, int col) {
+		App.debug("[Board, Delete pen digit]");
+
+		Coord coord = new Coord(row, col);
+		if (!coord.isValid(getSize())) {
+			Error.invalidCoord(coord, getSize());
+			return false;
+		}
+
+		int index = coordToIndex(coord);
+		Cell oldCell = _matrix.get(index);
+
+		if (oldCell.isHint()) {
+			Error.deleteHintCell(oldCell);
+			return false;
+		}
+
+		if (!oldCell.isFilled()) {
+			Warning.deleteEmptyCell(oldCell);
 			return true;
 		}
 
-
+		Cell newCell = new Cell(coord, ".", getSize(), false);
+		_matrix.set(index, newCell);
 		return true;
 	}
 

@@ -25,7 +25,7 @@ public class App {
 
 	public static void debug(String msg) {
 		if (Boolean.parseBoolean(System.getProperty("debug"))) {
-			System.out.println("[Debug]: " + msg);
+			System.out.println("[Debug] " + msg);
 		}
 	}
 }

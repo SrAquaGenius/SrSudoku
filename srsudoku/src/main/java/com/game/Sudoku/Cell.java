@@ -1,6 +1,5 @@
 package com.game.Sudoku;
 
-import com.game.App;
 import com.game.Options.CellOptions;
 
 import java.util.ArrayList;
@@ -21,14 +20,14 @@ public class Cell {
 	private boolean _beenVisited = false;
 
 	/* -----------------------------Constructor----------------------------- */
-	public Cell(Coord coord, String content, int size) {
+	public Cell(Coord coord, String content, int size, boolean isHint) {
 		this._coord = coord;
 
 		int digit;
 		try {
 			digit = Integer.parseInt(content);
 			_digit = digit;
-			_isHint = true;
+			_isHint = isHint;
 			_isFilled = true;
 		}
 		catch (NumberFormatException e) {

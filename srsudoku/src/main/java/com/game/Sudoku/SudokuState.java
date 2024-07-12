@@ -103,7 +103,6 @@ public class SudokuState {
 	
 					App.debug("Coordinates: (" + x + "," + y + ")");
 					App.debug("Value: " + value);
-	
 					break;
 				}
 				
@@ -117,7 +116,7 @@ public class SudokuState {
 			}
 		}
 
-		if (getBoard().addDigitIn(value, x, y)) {
+		if (getBoard().addPenDigit(value, x, y)) {
 			_id += 1;
 		}
 	}
@@ -126,6 +125,7 @@ public class SudokuState {
 		App.debug("[Delete pen digit]");
 
 		String delInput;
+		int x, y;
 		
 		while (true) {
 			Message.delPenDigitGuide();
@@ -136,8 +136,8 @@ public class SudokuState {
 
 			try {
 				if (matcher.matches()) {
-					int x = Integer.parseInt(matcher.group(1));
-					int y = Integer.parseInt(matcher.group(2));
+					x = Integer.parseInt(matcher.group(1));
+					y = Integer.parseInt(matcher.group(2));
 	
 					App.debug("Coordinates: (" + x + "," + y + ")");
 					break;
@@ -153,7 +153,9 @@ public class SudokuState {
 			}			
 		}
 
-		// _id += 1;
+		if (getBoard().delPenDigit(x, y)) {
+			_id += 1;
+		}
 	}
 
 	/* ----------------------- Auto Action functions ----------------------- */

@@ -41,12 +41,4 @@ public class Message {
 		System.out.print("[Delete pen digit]\n  type <coord>," + //
 						 " eg.: (1,3)\n  0 - cancel\n: ");
 	}
-
-	public static void overwriteHintCell() {
-		System.out.print("");
-	}
-
-	public static void overwriteFilledCell() {
-		System.out.print("");
-	}
 }
