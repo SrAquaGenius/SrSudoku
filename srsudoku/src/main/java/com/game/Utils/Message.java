@@ -15,36 +15,52 @@ public class Message {
 	}
 
 	public static void nextAction() {
-		System.out.print("[Next action]\n  0 - exit\n" +
-						 "  1 - new sudoku\n  2 - load sudoku\n" +
-						 "  3 - save sudoku\n  4 - manual move\n" +
-						 "  5 - auto move\n: ");
+		System.out.print("[Next action]\n" +
+						 "  0 - exit\n" +
+						 "  1 - new sudoku\n" +
+						 "  2 - load sudoku\n" +
+						 "  3 - save sudoku\n" +
+						 "  4 - manual move\n" +
+						 "  5 - auto move\n"+
+						 ": ");
 	}
 
 	public static void nextInitAction() {
-		System.out.print("[Next action]\n  0 - exit\n" + //
-						 "  1 - new sudoku\n  2 - load sudoku\n: ");
+		System.out.print("[Next action]\n" +
+						 "  0 - exit\n" +
+						 "  1 - new sudoku\n" +
+						 "  2 - load sudoku\n" +
+						 ": ");
 	}
 
 	public static void manualAction() {
-		System.out.print("[Manual action]\n  0 - back\n" + //
-						 "  1 - add pen digit\n  2 - delete pen digit\n" + //
-						 "  3 - print board\n: ");
+		System.out.print("[Manual action]\n" +
+						 "  0 - back\n" +
+						 "  1 - add pen digit\n" +
+						 "  2 - delete pen digit\n" +
+						 "  3 - print board\n" +
+						 ": ");
 	}
 
 	public static void autoAction() {
-		System.out.print("[Auto action]\n  0 - back\n" + //
-						 "  1 - do next iteration\n" + //
-						 "  2 - do all possible generation\n: ");
+		System.out.print("[Auto action]\n" +
+						 "  0 - back\n" +
+						 "  1 - do next iteration\n" +
+						 "  2 - do all possible generation\n" +
+						 ": ");
 	}
 
 	public static void addPenDigitGuide() {
-		System.out.print("[Add pen digit]\n  type <coord> <digit>," + //
-						 " eg.: (1,3) 4\n  0 - cancel\n: ");
+		System.out.print("[Add pen digit]\n" +
+						 "  type <coord> <digit>, eg.: (1,3) 4\n" +
+						 "  0 - cancel\n" +
+						 ": ");
 	}
 
 	public static void delPenDigitGuide() {
-		System.out.print("[Delete pen digit]\n  type <coord>," + //
-						 " eg.: (1,3)\n  0 - cancel\n: ");
+		System.out.print("[Delete pen digit]\n" +
+						 "  type <coord>, eg.: (1,3)\n" +
+						 "  0 - cancel\n" +
+						 ": ");
 	}
 }
