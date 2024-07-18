@@ -1,5 +1,6 @@
 package com.game.Game;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import com.game.Sudoku.SudokuState;
@@ -19,7 +20,7 @@ public class Game {
 	private boolean _hasSudoku = false;
 	private SudokuState _ss;
 
-	public Game(String filePath) throws IllegalArgumentException {
+	public Game() throws IllegalArgumentException {
 		Debug.place();
 
 		// gamePanel = new GamePanel();
@@ -41,7 +42,7 @@ public class Game {
 				if (Integer.parseInt(userInput) == 0)
 					break;
 				else if (Integer.parseInt(userInput) == 1)
-					newSudoku(filePath);
+					newSudoku(sc);
 				else if (Integer.parseInt(userInput) == 2)
 					loadSudoku();
 				else if (Integer.parseInt(userInput) == 3)
@@ -129,16 +130,37 @@ public class Game {
 	}
 
 	/* ------------------------ New Sudoku function ------------------------ */
-	public void newSudoku(String filename) {
+	public void newSudoku(Scanner scanner) {
 		Debug.place();
 
-		_ss = new SudokuState();
-		_ss.parseInput(filename);
+		String newInput;
 
-		Message.initialBoard(_ss);
-		Debug.print(_ss.getBoard().print());
+		while (true) {
+			Message.typeFilePath();
+			newInput = scanner.nextLine();
 
-		toggleHasSudoku();
+			try {
+				if (Integer.parseInt(newInput) == 0)
+					break;
+			}
+			catch (NumberFormatException e) {
+				// Do nothing. Evaluate as a string
+			}
+
+			try {
+				_ss = new SudokuState();
+				_ss.parseInput(newInput);
+
+				Message.initialBoard(_ss);
+				Debug.print(_ss.getBoard().print());
+
+				toggleHasSudoku();
+				break;
+			}
+			catch (IOException e) {
+				Error.invalidPath(newInput);
+			}
+		}
 	}
 
 	/* ----------------------- Load Sudoku function ------------------------ */

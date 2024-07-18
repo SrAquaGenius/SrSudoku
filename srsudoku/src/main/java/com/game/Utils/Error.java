@@ -46,4 +46,8 @@ public class Error {
 	public static void deleteHintCell(Cell cell) {
 		System.out.println("[Error] Couldn't delete hint cell " + cell);
 	}
+
+	public static void invalidPath(String path) {
+		System.out.println("[Error] no file found with the path: " + path);
+	}
 }

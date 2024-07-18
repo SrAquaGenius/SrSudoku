@@ -3,15 +3,15 @@ Creating a console log based sudoku app
 
 ## Compilling and running
 ```bash
-mvn compile exec:java -DfilePath=/path/to/your/file.txt
+mvn compile exec:java
 ```
 
 With debug:
 ```bash
-mvn compile exec:java -DfilePath=/path/to/your/file.txt -Ddebug
+mvn compile exec:java -Ddebug
 ```
 
-Example:
+Example path input:
 ```bash
-mvn compile exec:java -DfilePath=src/main/resources/tests/t1.txt -Ddebug
+"tests/t1.txt"
 ```

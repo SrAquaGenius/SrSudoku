@@ -63,4 +63,11 @@ public class Message {
 						 "  0 - cancel\n" +
 						 ": ");
 	}
+
+	public static void typeFilePath() {
+		System.out.print("[New Sudoku]\n" +
+						 "  type filepath from repo root\n" +
+						 "  0 - cancel\n" +
+						 ": ");
+	}
 }
