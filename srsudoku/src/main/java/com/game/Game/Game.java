@@ -16,6 +16,7 @@ public class Game {
 	// private GameWindow gameWindow;
 	// private GamePanel gamePanel;
 
+	private boolean _hasSudoku = false;
 	private SudokuState _ss;
 
 	public Game(String filePath) throws IllegalArgumentException {
@@ -24,26 +25,30 @@ public class Game {
 		// gamePanel = new GamePanel();
 		// gameWindow = new GameWindow(gamePanel);
 
-		_ss = new SudokuState();
-		_ss.parseInput(filePath);
-
-		Message.initialBoard(_ss);
-		Debug.print(_ss.getBoard().print());
-
 		Scanner sc = new Scanner(System.in);
-
 		String userInput;
 
 		while (true) {
-			Message.nextAction();
+
+			if (getHasSudoku()) {
+				Message.nextAction();
+			}
+			else Message.nextInitAction();
+
 			userInput = sc.nextLine();
 
 			try {
 				if (Integer.parseInt(userInput) == 0)
 					break;
 				else if (Integer.parseInt(userInput) == 1)
-					manualAction(sc);
+					newSudoku(filePath);
 				else if (Integer.parseInt(userInput) == 2)
+					loadSudoku();
+				else if (Integer.parseInt(userInput) == 3)
+					saveSudoku();				
+				else if (Integer.parseInt(userInput) == 4)
+					manualAction(sc);
+				else if (Integer.parseInt(userInput) == 5)
 					autoAction(sc);
 			
 				else Error.invalidOption();
@@ -57,6 +62,20 @@ public class Game {
 		sc.close();
 	}
 
+	/* ------------------------ Getters and setters ------------------------ */
+	public void toggleHasSudoku() {
+		_hasSudoku = !_hasSudoku;
+	}
+
+	public void setHasSudoku(boolean state) {
+		_hasSudoku = state;
+	}
+
+	public boolean getHasSudoku() {
+		return _hasSudoku;
+	}
+
+	/* ---------------------- Manual Action function ----------------------- */
 	public void manualAction(Scanner scanner) {
 		
 		String manualInput;
@@ -84,6 +103,7 @@ public class Game {
 		}
 	}
 
+	/* ----------------------- Auto Action function ------------------------ */
 	public void autoAction(Scanner scanner) {
 		String autoInput;
 		
@@ -106,5 +126,28 @@ public class Game {
 				Error.invalidInteger();
 			}
 		}
+	}
+
+	/* ------------------------ New Sudoku function ------------------------ */
+	public void newSudoku(String filename) {
+		Debug.place();
+
+		_ss = new SudokuState();
+		_ss.parseInput(filename);
+
+		Message.initialBoard(_ss);
+		Debug.print(_ss.getBoard().print());
+
+		toggleHasSudoku();
+	}
+
+	/* ----------------------- Load Sudoku function ------------------------ */
+	public void loadSudoku() {
+		Debug.todo();
+	}
+
+	/* ----------------------- Save Sudoku function ------------------------ */
+	public void saveSudoku() {
+		Debug.todo();
 	}
 }

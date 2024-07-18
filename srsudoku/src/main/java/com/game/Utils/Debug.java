@@ -36,5 +36,14 @@ public class Debug {
 		System.out.println("[" + caller.getClassName() +
 							":" + caller.getMethodName() +
 							":" + caller.getLineNumber() + "]" + obj);
-    }
+	}
+
+	public static void todo() {
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		StackTraceElement caller = stackTrace[2];
+		
+		System.out.println("[" + caller.getClassName() +
+							":" + caller.getMethodName() +
+							":" + caller.getLineNumber() + "] TODO!");
+	}
 }

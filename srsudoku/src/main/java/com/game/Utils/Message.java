@@ -15,8 +15,15 @@ public class Message {
 	}
 
 	public static void nextAction() {
+		System.out.print("[Next action]\n  0 - exit\n" +
+						 "  1 - new sudoku\n  2 - load sudoku\n" +
+						 "  3 - save sudoku\n  4 - manual move\n" +
+						 "  5 - auto move\n: ");
+	}
+
+	public static void nextInitAction() {
 		System.out.print("[Next action]\n  0 - exit\n" + //
-						 "  1 - manual move\n  2 - auto move\n: ");
+						 "  1 - new sudoku\n  2 - load sudoku\n: ");
 	}
 
 	public static void manualAction() {
