@@ -2,11 +2,11 @@ package com.game.Game;
 
 import java.util.Scanner;
 
-import com.game.App;
-import com.game.Error;
-import com.game.Message;
-
 import com.game.Sudoku.SudokuState;
+
+import com.game.Utils.Debug;
+import com.game.Utils.Error;
+import com.game.Utils.Message;
 
 // import com.game.Solver.*;
 // import com.game.Sudoku.Sudoku;
@@ -19,6 +19,8 @@ public class Game {
 	private SudokuState _ss;
 
 	public Game(String filePath) throws IllegalArgumentException {
+		Debug.place();
+
 		// gamePanel = new GamePanel();
 		// gameWindow = new GameWindow(gamePanel);
 
@@ -26,8 +28,7 @@ public class Game {
 		_ss.parseInput(filePath);
 
 		Message.initialBoard(_ss);
-		
-		App.debug(_ss.getBoard().print());
+		Debug.print(_ss.getBoard().print());
 
 		Scanner sc = new Scanner(System.in);
 
@@ -44,8 +45,6 @@ public class Game {
 					manualAction(sc);
 				else if (Integer.parseInt(userInput) == 2)
 					autoAction(sc);
-				else if (Integer.parseInt(userInput) == 3)
-					Message.board(_ss);
 			
 				else Error.invalidOption();
 			}
@@ -73,6 +72,8 @@ public class Game {
 					_ss.addPenDigit(scanner);
 				else if (Integer.parseInt(manualInput) == 2)
 					_ss.delPenDigit(scanner);
+				else if (Integer.parseInt(manualInput) == 3)
+					Message.board(_ss);
 
 				else Error.invalidOption();
 			}

@@ -3,12 +3,15 @@ package com.game;
 import java.io.File;
 
 import com.game.Game.Game;
+import com.game.Utils.Debug;
+import com.game.Utils.Error;
 
 public class App {
 	public static void main(String[] args) {
+		Debug.place();
 
 		String path = System.getProperty("filePath");
-        debug("File path: " + path);
+        Debug.print("File path: " + path);
 		
 		try {
 			// Construct the absolute file path based on the project root
@@ -20,12 +23,6 @@ public class App {
             new Game(file.getAbsolutePath());
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
-		}
-	}
-
-	public static void debug(String msg) {
-		if (Boolean.parseBoolean(System.getProperty("debug"))) {
-			System.out.println("[Debug] " + msg);
 		}
 	}
 }

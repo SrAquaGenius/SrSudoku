@@ -8,9 +8,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.game.App;
-import com.game.Error;
-import com.game.Message;
-import com.game.Regex;
+import com.game.Utils.Debug;
+import com.game.Utils.Error;
+import com.game.Utils.Message;
+import com.game.Utils.Regex;
 
 public class SudokuState {
 
@@ -82,7 +83,7 @@ public class SudokuState {
 
 	/* ---------------------- Manual Action functions ---------------------- */
 	public void addPenDigit(Scanner scanner) {
-		App.debug("[Add pen digit]");
+		Debug.place();
 		
 		String addInput;
 
@@ -101,8 +102,8 @@ public class SudokuState {
 					y = Integer.parseInt(matcher.group(2));
 					value = Integer.parseInt(matcher.group(3));
 	
-					App.debug("Coordinates: (" + x + "," + y + ")");
-					App.debug("Value: " + value);
+					Debug.print("Coordinates: (" + x + "," + y + ")");
+					Debug.print("Value: " + value);
 					break;
 				}
 				
@@ -122,7 +123,7 @@ public class SudokuState {
 	}
 
 	public void delPenDigit(Scanner scanner) {
-		App.debug("[Delete pen digit]");
+		Debug.place();
 
 		String delInput;
 		int x, y;
@@ -139,7 +140,7 @@ public class SudokuState {
 					x = Integer.parseInt(matcher.group(1));
 					y = Integer.parseInt(matcher.group(2));
 	
-					App.debug("Coordinates: (" + x + "," + y + ")");
+					Debug.print("Coordinates: (" + x + "," + y + ")");
 					break;
 				}
 	
@@ -160,13 +161,13 @@ public class SudokuState {
 
 	/* ----------------------- Auto Action functions ----------------------- */
 	public void nextIteration() {
-		App.debug("[Next iteration]");
+		Debug.place();
 		_id += 1;
 		getBoard().nextIteration();
 	}
 
 	public void fullGeneration() {
-		App.debug("[Full Generation]");
+		Debug.place();
 		boolean eval = true;
 
 		while (eval) {
@@ -177,7 +178,7 @@ public class SudokuState {
 
 	/* -------------------------- Solve function --------------------------- */
 	public void solve() {
-		App.debug("«Solve function»");
+		Debug.place();
 	}
 
 	/* ------------------------ To String function ------------------------- */

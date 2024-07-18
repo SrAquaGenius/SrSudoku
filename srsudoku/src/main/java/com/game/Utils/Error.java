@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Utils;
 
 import com.game.Sudoku.Cell;
 import com.game.Sudoku.Coord;

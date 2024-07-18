@@ -1,9 +1,9 @@
 package com.game.Sudoku;
 
-import com.game.Options.CellOptions;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.game.Sudoku.Options.CellOptions;
 
 public class Cell {
 

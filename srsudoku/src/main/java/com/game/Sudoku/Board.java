@@ -1,10 +1,11 @@
 package com.game.Sudoku;
 
 import com.game.App;
-import com.game.Error;
-import com.game.Warning;
+import com.game.Sudoku.Options.BoardOptions;
 
-import com.game.Options.BoardOptions;
+import com.game.Utils.Debug;
+import com.game.Utils.Error;
+import com.game.Utils.Warning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -308,7 +309,7 @@ public class Board {
 
 			if (digits.size() == 1) {
 
-				App.debug(cell.toString() + " " + digits.get(0));
+				Debug.print(cell.toString() + " " + digits.get(0));
 
 				cell.updateDigit();
 				_matrix.set(m, cell);
@@ -322,7 +323,7 @@ public class Board {
 
 	/* ----------------------- Add Digit In function ----------------------- */
 	public boolean addPenDigit(int digit, int row, int col) {
-		App.debug("[Board, Add pen digit]");
+		Debug.place();
 
 		Coord coord = new Coord(row, col);
 		if (!coord.isValid(getSize())) {
@@ -348,7 +349,7 @@ public class Board {
 	}
 
 	public boolean delPenDigit(int row, int col) {
-		App.debug("[Board, Delete pen digit]");
+		Debug.place();
 
 		Coord coord = new Coord(row, col);
 		if (!coord.isValid(getSize())) {

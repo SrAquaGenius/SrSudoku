@@ -1,4 +1,4 @@
-package com.game.Options;
+package com.game.Sudoku.Options;
 
 public abstract class Options {
 	Options() {}

@@ -1,7 +1,8 @@
 package com.game.Solver;
 
-import com.game.App;
 import com.game.Sudoku.Sudoku;
+
+import com.game.Utils.Debug;
 
 public class DepthFirstTreeSearch extends Solver {
 
@@ -11,8 +12,7 @@ public class DepthFirstTreeSearch extends Solver {
 
 	@Override
 	public void solve() {
-		App.debug("«DepthFirstTreeSearch»");
+		Debug.place();
 
-		
 	}
 }

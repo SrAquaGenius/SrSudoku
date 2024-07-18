@@ -1,4 +1,4 @@
-package com.game.Options;
+package com.game.Sudoku.Options;
 
 public class BoardOptions extends Options {
 	BoardOptions() {

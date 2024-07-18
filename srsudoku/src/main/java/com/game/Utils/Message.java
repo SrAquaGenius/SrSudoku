@@ -1,4 +1,4 @@
-package com.game;
+package com.game.Utils;
 
 import com.game.Sudoku.SudokuState;
 
@@ -16,14 +16,13 @@ public class Message {
 
 	public static void nextAction() {
 		System.out.print("[Next action]\n  0 - exit\n" + //
-						 "  1 - manual move\n  2 - auto move\n" + //
-						 "  3 - print board\n: ");
+						 "  1 - manual move\n  2 - auto move\n: ");
 	}
 
 	public static void manualAction() {
 		System.out.print("[Manual action]\n  0 - back\n" + //
-						 "  1 - add pen digit\n" + //
-						 "  2 - delete pen digit\n: ");
+						 "  1 - add pen digit\n  2 - delete pen digit\n" + //
+						 "  3 - print board\n: ");
 	}
 
 	public static void autoAction() {
