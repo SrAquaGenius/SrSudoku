@@ -70,20 +70,16 @@ public class Game {
 	}
 
 	/* ------------------------ Getters and setters ------------------------ */
-	public void toggleHasSudoku() {
-		_hasSudoku = !_hasSudoku;
-	}
-
-	public void setHasSudoku(boolean state) {
+	private void setHasSudoku(boolean state) {
 		_hasSudoku = state;
 	}
 
-	public boolean getHasSudoku() {
+	private boolean getHasSudoku() {
 		return _hasSudoku;
 	}
 
 	/* ---------------------- Manual Action function ----------------------- */
-	public void manualAction(Scanner scanner) {
+	private void manualAction(Scanner scanner) {
 		
 		String manualInput;
 		
@@ -111,7 +107,7 @@ public class Game {
 	}
 
 	/* ----------------------- Auto Action function ------------------------ */
-	public void autoAction(Scanner scanner) {
+	private void autoAction(Scanner scanner) {
 		String autoInput;
 		
 		while (true) {
@@ -136,52 +132,74 @@ public class Game {
 	}
 
 	/* ------------------------ New Sudoku function ------------------------ */
-	public void newSudoku(Scanner scanner) {
+	private void newSudoku(Scanner scanner) {
 		Debug.place();
-
-		String newInput, path;
 
 		while (true) {
 			Message.typeFilePath();
-			newInput = scanner.nextLine();
+			String newInput = scanner.nextLine();
 
-			try {
-				if (Integer.parseInt(newInput) == 0)
-					break;
-			}
-			catch (NumberFormatException e) {
-				// Do nothing. Evaluate as a string
-			}
+			if (isExitCommand(newInput)) break;
 
-			path = newInput;
+			String path = constructTxtPath(newInput);
 
-			try {
-				if (!newInput.contains("/")) {
-					path = DEFAULT_TXT_PATH + path + TXT_EXTENTION;
-				}
-
-				_ss = new SudokuState();
-				_ss.parseInput(path);
-
-				Message.initialBoard(_ss);
-				Debug.print(_ss.getBoard().print());
-
-				setHasSudoku(true);
-				break;
-			}
-			catch (IOException e) {
+			if (!initializeSudokuState(path)) {
 				Error.invalidPath(path);
+				continue;
 			}
+
+			Message.initialBoard(_ss);
+			Debug.print(_ss.getBoard().print());
+			setHasSudoku(true);
+			break;
 		}
 	}
 
 	/* ----------------------- Load Sudoku function ------------------------ */
-	public void loadSudoku() {
+	private void loadSudoku() {
 		Debug.todo();
 	}
 
 	/* ----------------------- Save Sudoku function ------------------------ */
-	public void saveSudoku() {
+	private void saveSudoku() {
 		Debug.todo();
+	}
+
+	/* ------------------- Is Exit Command test function ------------------- */
+	private boolean isExitCommand(String input) {
+		try {
+			return Integer.parseInt(input) == 0;
+		}
+		catch (NumberFormatException e) {
+			return false; // Not an integer, thus not an exit command
+		}
+	}
+
+	/* -------------------- Construct Txt Path function -------------------- */
+	private String constructTxtPath(String input) {
+		if (!input.contains("/"))
+			return DEFAULT_TXT_PATH + input + TXT_EXTENTION;
+
+		return input;
+	}
+
+	/* -------------------- Construct Obj Path function -------------------- */
+	// private String constructObjPath(String input) {
+	// 	if (!input.contains("/")) {
+	// 		return DEFAULT_OBJ_PATH + input + OBJ_EXTENTION;
+	// 	}
+	// 	return input;
+	// }
+
+	/* ----------------- Initialize Sudoku State function ------------------ */
+	private boolean initializeSudokuState(String path) {
+		try {
+			_ss = new SudokuState();
+			_ss.parseInput(path);
+			return true;
+		}
+		catch (IOException e) {
+			return false;
+		}
 	}
 }

@@ -7,7 +7,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.game.App;
 import com.game.Utils.Debug;
 import com.game.Utils.Error;
 import com.game.Utils.Message;

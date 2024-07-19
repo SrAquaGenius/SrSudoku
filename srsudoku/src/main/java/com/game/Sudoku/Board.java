@@ -1,6 +1,5 @@
 package com.game.Sudoku;
 
-import com.game.App;
 import com.game.Sudoku.Options.BoardOptions;
 
 import com.game.Utils.Debug;
