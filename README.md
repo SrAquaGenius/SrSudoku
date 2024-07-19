@@ -11,7 +11,12 @@ With debug:
 mvn compile exec:java -Ddebug
 ```
 
-Example path input:
+Example path for text input:
 ```bash
-"tests/t1.txt"
+"src/main/resources/txtData/t1.txt"
+```
+
+Example path for sudoku state objects (.sst):
+```bash
+"src/main/resources/objData/s1.sst"
 ```
