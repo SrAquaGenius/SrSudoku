@@ -66,7 +66,7 @@ public class Message {
 
 	public static void typeFilePath() {
 		System.out.print("[New Sudoku]\n" +
-						 "  type filepath from repo root\n" +
+						 "  type filename or full path from root\n" +
 						 "  0 - cancel\n" +
 						 ": ");
 	}

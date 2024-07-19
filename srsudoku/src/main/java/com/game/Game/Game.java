@@ -20,6 +20,12 @@ public class Game {
 	private boolean _hasSudoku = false;
 	private SudokuState _ss;
 
+	private static final String DEFAULT_TXT_PATH = "src/main/resources/txtData/";
+	private static final String DEFAULT_OBJ_PATH = "src/main/resources/objData/";
+	
+	private static final String TXT_EXTENTION = ".txt";
+	private static final String OBJ_EXTENTION = ".sst";
+
 	public Game() throws IllegalArgumentException {
 		Debug.place();
 
@@ -133,7 +139,7 @@ public class Game {
 	public void newSudoku(Scanner scanner) {
 		Debug.place();
 
-		String newInput;
+		String newInput, path;
 
 		while (true) {
 			Message.typeFilePath();
@@ -147,18 +153,24 @@ public class Game {
 				// Do nothing. Evaluate as a string
 			}
 
+			path = newInput;
+
 			try {
+				if (!newInput.contains("/")) {
+					path = DEFAULT_TXT_PATH + path + TXT_EXTENTION;
+				}
+
 				_ss = new SudokuState();
-				_ss.parseInput(newInput);
+				_ss.parseInput(path);
 
 				Message.initialBoard(_ss);
 				Debug.print(_ss.getBoard().print());
 
-				toggleHasSudoku();
+				setHasSudoku(true);
 				break;
 			}
 			catch (IOException e) {
-				Error.invalidPath(newInput);
+				Error.invalidPath(path);
 			}
 		}
 	}
