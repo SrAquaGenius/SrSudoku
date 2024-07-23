@@ -44,6 +44,15 @@ public class Debug {
 		
 		System.out.println("[" + caller.getClassName() +
 							":" + caller.getMethodName() +
-							":" + caller.getLineNumber() + "] TODO!");
+							":" + caller.getLineNumber() + "]\n  TODO");
+	}
+
+	public static void todoMsg(String msg) {
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		StackTraceElement caller = stackTrace[2];
+		
+		System.out.println("[" + caller.getClassName() +
+							":" + caller.getMethodName() +
+							":" + caller.getLineNumber() + "]\n  TODO: " + msg);
 	}
 }

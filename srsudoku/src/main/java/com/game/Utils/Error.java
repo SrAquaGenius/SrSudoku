@@ -5,49 +5,57 @@ import com.game.Sudoku.Coord;
 
 public class Error {
 
-	public static String invalidFirstLine() {
-		return "First line must be an integer representing the number of rows.";
-	}
-
-	public static String notEnoughLines() {
-		return "File contains fewer lines than expected.";
-	}
-
-	public static String tooManyLines() {
-		return "File contains more lines than expected.";
-	}
-
-	public static String fileNotFound(String fileName) {
-		return "File not found: " + fileName;
-	}
+	public static String error() { return "[Error] "; }
 
 	/* --------------------------------------------------------------------- */
 	public static void invalidOption() {
-		System.out.println("[Error] Type a valid option!");
+		System.out.println(error() + "Type a valid option!");
 	}
 
 	public static void invalidInteger() {
-		System.out.println("[Error] Type a valid integer!");
+		System.out.println(error() + "Type a valid integer!");
 	}
 
 	public static void invalidPattern() {
-		System.out.println("[Error] Type a valid pattern!");
+		System.out.println(error() + "Type a valid pattern!");
 	}
 
 	public static void invalidCoord(Coord coord, int size) {
-		System.out.println("[Error] Coordinate " + coord + //
+		System.out.println(error() + "Coordinate " + coord + //
 						 " is invalid for size " + size);
 	}
 
 	public static void overwriteHintCell(Cell cell) {
-		System.out.println("[Error] Couldn't re-write hint cell " + cell);
+		System.out.println(error() + "Couldn't re-write hint cell " + cell);
 	}
 
 	public static void deleteHintCell(Cell cell) {
-		System.out.println("[Error] Couldn't delete hint cell " + cell);
+		System.out.println(error() + "Couldn't delete hint cell " + cell);
 	}
 
-	public static void invalidPath(String path) {
-		System.out.println("[Error] no file found with the path: " + path);
+	/* ------------------------ File related errors ------------------------ */
+	public static void fileInteraction(String path) {
+		System.out.println(error() + "IO Exception on file with path: " + path);
+	}
+
+	public static void emptyFile(String path) {
+		System.out.println(error() + "Empty file with path: " + path);
+	}
+
+	public static void invalidFirstLine() {
+		System.out.println(error() + "First line must be an integer " +
+							"representing the number of rows in the sudoku.");
+	}
+
+	public static void notEnoughLines() {
+		System.out.println(error() + "File contains fewer lines than expected");
+	}
+
+	public static void tooManyLines() {
+		System.out.println(error() + "File contains more lines than expected");
+	}
+
+	public static void fileNotFound(String fileName) {
+		System.out.println("File not found: " + fileName);
 	}
 }

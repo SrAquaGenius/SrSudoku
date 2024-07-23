@@ -1,14 +1,196 @@
 package com.game.Sudoku;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.game.Utils.Debug;
+import com.game.Utils.Error;
+import com.game.Utils.Message;
+import com.game.Utils.Regex;
+
 public class Sudoku {
 
+	private String _name;
 	private SudokuState _state;
 
-	public Sudoku(SudokuState state) {
-		this._state = state;
+	/* ---------------------------- Constructor ---------------------------- */
+	public Sudoku(String name) {
+		this._name = name;
 	}
 
+	/* ------------------- Getters and setters functions ------------------- */
 	public SudokuState getState() { return _state; }
 	public void setState(SudokuState state) { this._state = state; }
+
+	public String getName() { return _name; }
+	public void setName(String name) { this._name = name;}
+
+	/* ----------------- Initialize Sudoku State function ------------------ */
+	public boolean initializeSudokuState(String path) {
+		try {
+			SudokuState state = new SudokuState();
+
+			if (!parseInput(path, state))
+				return false;
+
+			Debug.print(state.getBoard().print());
+			setState(state);
+			return true;
+		}
+		catch (IOException e) {
+			Error.fileInteraction(path);
+			return false;
+		}
+	}
+
+	/* ----------------------- Parse Input function ------------------------ */
+	public boolean parseInput(String path, SudokuState ss) throws IOException {
+
+		BufferedReader reader = new BufferedReader(new FileReader(path));
+
+		// Read the first line which contains the number of rows
+		String firstLine = reader.readLine();
+		if (firstLine == null) {
+			Error.emptyFile(path);
+			reader.close();
+			return false;
+		}
+
+		int dim;
+		try {
+			dim = Integer.parseInt(firstLine.trim());
+		} catch (NumberFormatException e) {
+			Error.invalidFirstLine();
+			reader.close();
+			return false;
+		}
+
+		// Read the grid lines
+		String[] grid = new String[dim];
+		for (int i = 0; i < dim; i++) {
+			String line = reader.readLine();
+			if (line == null) {
+				Error.notEnoughLines();
+				reader.close();
+				return false;
+			}
+			grid[i] = line;
+		}
+
+		// Check if there are extra lines beyond the expected number
+		if (reader.readLine() != null) {
+			Error.tooManyLines();
+			reader.close();
+			return false;
+		}
+
+		reader.close();
+
+		ss.populateBoard(dim, grid);
+		ss.doIteration();
+		return true;
+	}
+
+	/* ---------------------- Manual Action functions ---------------------- */
+	public void addPenDigit(Scanner scanner) {
+		Debug.place();
+		
+		String addInput;
+
+		int x, y, value;
+		
+		while (true) {
+			Message.addPenDigitGuide();
+			addInput = scanner.nextLine();
+
+			Pattern pattern = Pattern.compile(Regex.coordDigit());
+			Matcher matcher = pattern.matcher(addInput);
+
+			try {
+				if (matcher.matches()) {
+					x = Integer.parseInt(matcher.group(1));
+					y = Integer.parseInt(matcher.group(2));
+					value = Integer.parseInt(matcher.group(3));
+	
+					Debug.print("Coordinates: (" + x + "," + y + ")");
+					Debug.print("Value: " + value);
+					break;
+				}
+				
+				else if (Integer.parseInt(addInput) == 0)
+					return;
+				else Error.invalidPattern();
+			}
+
+			catch (NumberFormatException e) {
+				Error.invalidPattern();
+			}
+		}
+
+		getState().addPenDigit(value, x, y);
+	}
+
+	public void delPenDigit(Scanner scanner) {
+		Debug.place();
+
+		String delInput;
+		int x, y;
+		
+		while (true) {
+			Message.delPenDigitGuide();
+			delInput = scanner.nextLine();
+
+			Pattern pattern = Pattern.compile(Regex.coord());
+			Matcher matcher = pattern.matcher(delInput);
+
+			try {
+				if (matcher.matches()) {
+					x = Integer.parseInt(matcher.group(1));
+					y = Integer.parseInt(matcher.group(2));
+	
+					Debug.print("Coordinates: (" + x + "," + y + ")");
+					break;
+				}
+	
+				else if (Integer.parseInt(delInput) == 0)
+					return;
+				else Error.invalidPattern();
+			}
+
+			catch (NumberFormatException e) {
+				Error.invalidPattern();
+			}			
+		}
+
+		getState().delPenDigit(x, y);
+	}
+
+	/* ----------------------- Auto Action functions ----------------------- */
+	public void nextIteration() {
+		Debug.todo();
+		// _id += 1;
+		// getBoard().nextIteration();
+	}
+
+	public void fullGeneration() {
+		Debug.todo();
+		// boolean eval = true;
+
+		// while (eval) {
+		// 	_id += 1;
+		// 	eval = getBoard().nextIteration();
+		// }
+	}
+
+	/* -------------------------- Solve function --------------------------- */
+	public void solve() {
+		Debug.todo();
+	}
+
+	/* ------------------------ To String function ------------------------- */
 
 }

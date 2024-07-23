@@ -1,20 +1,19 @@
 package com.game.Utils;
 
-import com.game.Sudoku.SudokuState;
+// import com.game.Sudoku.SudokuState;
 
 public class Message {
 
-	public static void initialBoard(SudokuState ss) {
-		System.out.print("[Initial board] ");
-		System.out.print(ss);
+	public static void nextAction(boolean hasSudoku) {
+		if (hasSudoku) {
+			Message.nextDefaultAction();
+		}
+		else {
+			Message.nextInitAction();
+		}
 	}
 
-	public static void board(SudokuState ss) {
-		System.out.print("[Board] ");
-		System.out.print(ss);
-	}
-
-	public static void nextAction() {
+	public static void nextDefaultAction() {
 		System.out.print("[Next action]\n" +
 						 "  0 - exit\n" +
 						 "  1 - new sudoku\n" +
