@@ -7,12 +7,16 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.io.Serializable;
+
 import com.game.Utils.Debug;
 import com.game.Utils.Error;
 import com.game.Utils.Message;
 import com.game.Utils.Regex;
 
-public class Sudoku {
+public class Sudoku implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String _name;
 	private SudokuState _state;
@@ -29,8 +33,8 @@ public class Sudoku {
 	public String getName() { return _name; }
 	public void setName(String name) { this._name = name;}
 
-	/* ----------------- Initialize Sudoku State function ------------------ */
-	public boolean initializeSudokuState(String path) {
+	/* -------------------- Initialize Sudoku function --------------------- */
+	public boolean initializeSudoku(String path) {
 		try {
 			SudokuState state = new SudokuState();
 
@@ -192,5 +196,7 @@ public class Sudoku {
 	}
 
 	/* ------------------------ To String function ------------------------- */
-
+	public String toString() {
+		return "[Sudoku] name: " + getName() + ", id: " + getState().getId();
+	}
 }

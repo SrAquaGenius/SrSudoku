@@ -58,4 +58,10 @@ public class Error {
 	public static void fileNotFound(String fileName) {
 		System.out.println("File not found: " + fileName);
 	}
+
+	public static String onSaveObject() {
+		String error = error() + "Serialized object was not properly saved";
+		System.out.println(error);
+		return error;
+	}
 }
