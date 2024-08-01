@@ -1,12 +1,18 @@
-package com.game.Game;
+package com.game;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.game.Sudoku.Sudoku;
 
 import com.game.Utils.Debug;
 import com.game.Utils.Error;
 import com.game.Utils.Message;
+import com.game.Utils.Path;
 import com.game.Utils.Regex;
 
 // import com.game.Solver.*;
@@ -20,37 +26,30 @@ public class Game {
 	private boolean _hasSudoku = false;
 	private Sudoku _sudoku;
 
+	/* ---------------------------- Constructor ---------------------------- */
 	public Game() throws IllegalArgumentException {
 		Debug.place();
+	}
 
-		// gamePanel = new GamePanel();
-		// gameWindow = new GameWindow(gamePanel);
-
-		Scanner sc = new Scanner(System.in);
+	/* ------------------------ Game Loop function ------------------------- */
+	public void gameLoop(Scanner sc) {
 		String userInput;
 
 		while (true) {
-
 			Message.nextAction(hasSudoku());
 			userInput = sc.nextLine();
 
 			try {
-				if (Integer.parseInt(userInput) == 0)
-					break;
-				else if (Integer.parseInt(userInput) == 1)
-					newSudoku(sc);
-				else if (Integer.parseInt(userInput) == 2)
-					loadSudoku();
-				else if (Integer.parseInt(userInput) == 3)
-					saveSudoku();				
-				else if (Integer.parseInt(userInput) == 4)
-					manualAction(sc);
-				else if (Integer.parseInt(userInput) == 5)
-					autoAction(sc);
-			
+				int option = Integer.parseInt(userInput);
+
+				if (option == 0) break;
+				else if (option == 1) newSudoku(sc);
+				else if (option == 2) loadSudoku();
+				else if (option == 3) saveSudoku(sc);                
+				else if (option == 4) manualAction(sc);
+				else if (option == 5) autoAction(sc);
 				else Error.invalidOption();
 			}
-
 			catch (NumberFormatException e) {
 				Error.invalidInteger();
 			}
@@ -67,19 +66,18 @@ public class Game {
 	public Sudoku setSudoku(Sudoku sudoku) {return this._sudoku = sudoku; } 
 
 	/* ------------------------ New Sudoku function ------------------------ */
-	private void newSudoku(Scanner scanner) {
+	public void newSudoku(Scanner scanner) {
 		Debug.place();
 
 		while (true) {
-			Message.typeFilePath();
+			Message.newSudoku();
 			String newInput = scanner.nextLine();
 
 			if (isExitCommand(newInput)) break;
 
-			String path = Regex.constructTxtPath(newInput);
-			Sudoku sudoku = new Sudoku(path);
+			Sudoku sudoku = new Sudoku(newInput);
 
-			if (sudoku.initializeSudokuState(path)) {
+			if (sudoku.initializeSudoku(Path.constructTxtPath(newInput))) {
 				setHasSudoku(true);
 				System.out.println(setSudoku(sudoku));
 				break;
@@ -88,17 +86,52 @@ public class Game {
 	}
 
 	/* ----------------------- Load Sudoku function ------------------------ */
-	private void loadSudoku() {
+	public void loadSudoku() {
 		Debug.todo();
 	}
 
 	/* ----------------------- Save Sudoku function ------------------------ */
-	private void saveSudoku() {
-		Debug.todo();
+	public void saveSudoku(Scanner scanner) {
+		Debug.place();
+
+		while (true) {
+			String sudokuName = getSudoku().getName();
+			Message.saveSudoku(sudokuName);
+
+			String saveInput = scanner.nextLine();
+			String path;
+
+			if (isExitCommand(saveInput)) {
+				path = Path.constructObjPath(sudokuName);
+			}
+			else {
+				path = Path.constructObjExtention(saveInput);
+			}
+
+			if (saveSudokuAs(path)) return;
+		}
+	}
+
+	/* ---------------------- Save Sudoku As function ---------------------- */
+	public boolean saveSudokuAs(String objPath) {
+		Debug.place();
+
+		try (
+			FileOutputStream fileOut = new FileOutputStream(objPath);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut)
+		) {
+			out.writeObject(objPath);
+			Message.savedObject();
+			return true;
+		}
+		catch (IOException i) {
+			Error.onSaveObject();
+			return false;
+		}
 	}
 
 	/* ---------------------- Manual Action function ----------------------- */
-	private void manualAction(Scanner scanner) {
+	public void manualAction(Scanner scanner) {
 		
 		String manualInput;
 		
@@ -126,7 +159,7 @@ public class Game {
 	}
 
 	/* ----------------------- Auto Action function ------------------------ */
-	private void autoAction(Scanner scanner) {
+	public void autoAction(Scanner scanner) {
 		String autoInput;
 		
 		while (true) {
