@@ -1,11 +1,12 @@
 package com.game;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.game.Sudoku.Sudoku;
 
@@ -13,7 +14,7 @@ import com.game.Utils.Debug;
 import com.game.Utils.Error;
 import com.game.Utils.Message;
 import com.game.Utils.Path;
-import com.game.Utils.Regex;
+import com.game.Utils.Warning;
 
 // import com.game.Solver.*;
 // import com.game.Sudoku.Sudoku;
@@ -44,7 +45,7 @@ public class Game {
 
 				if (option == 0) break;
 				else if (option == 1) newSudoku(sc);
-				else if (option == 2) loadSudoku();
+				else if (option == 2) loadSudoku(sc);
 				else if (option == 3) saveSudoku(sc);                
 				else if (option == 4) manualAction(sc);
 				else if (option == 5) autoAction(sc);
@@ -86,8 +87,42 @@ public class Game {
 	}
 
 	/* ----------------------- Load Sudoku function ------------------------ */
-	public void loadSudoku() {
-		Debug.todo();
+	public void loadSudoku(Scanner scanner) {
+		Debug.place();
+
+		while (true) {
+			Message.loadSudoku();
+			String loadInput = scanner.nextLine();
+
+			if (isExitCommand(loadInput)) break;
+
+			String path = Path.constructObjPath(loadInput);
+			if (loadSudokuAs(path)) return;
+		}
+	}
+
+	/* ---------------------- Load Sudoku As function ---------------------- */
+	public boolean loadSudokuAs(String objPath) {
+		Debug.place();
+
+		try (
+			FileInputStream fileIn = new FileInputStream(objPath);
+			ObjectInputStream in = new ObjectInputStream(fileIn)
+		) {
+			Sudoku sudoku = (Sudoku) in.readObject();
+			Message.loadedObject();
+			setSudoku(sudoku);
+			return true;
+		} 
+		catch (IOException i) {
+			Error.onLoadObject();
+			i.printStackTrace();
+		} 
+		catch (ClassNotFoundException c) {
+			Error.onClassNotFound();
+		}
+
+		return false;
 	}
 
 	/* ----------------------- Save Sudoku function ------------------------ */
@@ -99,12 +134,17 @@ public class Game {
 			Message.saveSudoku(sudokuName);
 
 			String saveInput = scanner.nextLine();
+			
+			if (isExitCommand(saveInput)) return;
+
 			String path;
 
-			if (isExitCommand(saveInput)) {
+			if (isEnterCommand(saveInput)) {
+				Debug.print("Enter command");
 				path = Path.constructObjPath(sudokuName);
 			}
 			else {
+				Debug.print("Not enter command");
 				path = Path.constructObjExtention(saveInput);
 			}
 
@@ -115,12 +155,19 @@ public class Game {
 	/* ---------------------- Save Sudoku As function ---------------------- */
 	public boolean saveSudokuAs(String objPath) {
 		Debug.place();
+		Debug.print(objPath);
+
+		File file = new File(objPath);
+		if (file.exists()) {
+			Warning.onDuplicateFile(objPath);
+			return false;
+		}
 
 		try (
 			FileOutputStream fileOut = new FileOutputStream(objPath);
 			ObjectOutputStream out = new ObjectOutputStream(fileOut)
 		) {
-			out.writeObject(objPath);
+			out.writeObject(getSudoku());
 			Message.savedObject();
 			return true;
 		}
@@ -191,5 +238,9 @@ public class Game {
 		catch (NumberFormatException e) {
 			return false; // Not an integer, thus not an exit command
 		}
+	}
+
+	private boolean isEnterCommand(String input) {
+		return input.length() == 0;
 	}
 }

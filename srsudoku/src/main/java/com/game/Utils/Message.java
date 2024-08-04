@@ -80,10 +80,26 @@ public class Message {
 		return output;
 	}
 
+	public static String loadSudoku() {
+		String output = "[Load Sudoku]\n" +
+						"  type filename or full path from root\n" +
+						"  0 - cancel\n" +
+						": ";
+		System.out.print(output);
+		return output;
+	}
+
+	public static String loadedObject() {
+		String output = "[Loaded object] Serialized object loaded";
+		System.out.println(output);
+		return output;
+	}
+
 	public static String saveSudoku(String name) {
 		String output = "[Save Sudoku]\n" +
 						"  type filename or full path from root\n" +
-						"  0 - save with name '" + name + "' at default root\n" +
+						"  enter - save with name '" + name + "' at default root\n" +
+						"  0 - cancel\n" +
 						": ";
 		System.out.print(output);
 		return output;

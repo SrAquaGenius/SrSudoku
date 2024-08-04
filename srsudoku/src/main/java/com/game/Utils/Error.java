@@ -64,4 +64,16 @@ public class Error {
 		System.out.println(error);
 		return error;
 	}
+
+	public static String onLoadObject() {
+		String error = error() + "Serialized object was not properly loaded";
+		System.out.println(error);
+		return error;
+	}
+
+	public static String onClassNotFound() {
+		String error = error() + "Casting object was not properly done";
+		System.out.println(error);
+		return error;
+	}
 }
