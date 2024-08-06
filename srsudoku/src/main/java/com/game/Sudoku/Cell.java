@@ -1,11 +1,14 @@
 package com.game.Sudoku;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.game.Sudoku.Options.CellOptions;
 
-public class Cell {
+public class Cell implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Coord _coord;
 

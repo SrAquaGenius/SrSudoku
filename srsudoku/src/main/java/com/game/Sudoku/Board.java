@@ -6,10 +6,13 @@ import com.game.Utils.Debug;
 import com.game.Utils.Error;
 import com.game.Utils.Warning;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
+public class Board implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static final int BOX_SIZE = 3;
 

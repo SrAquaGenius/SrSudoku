@@ -2,6 +2,7 @@ package com.game;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -112,6 +113,7 @@ public class Game {
 			Sudoku sudoku = (Sudoku) in.readObject();
 			Message.loadedObject();
 			setSudoku(sudoku);
+			setHasSudoku(true);
 			return true;
 		} 
 		catch (IOException i) {
@@ -171,10 +173,14 @@ public class Game {
 			Message.savedObject();
 			return true;
 		}
+		catch (FileNotFoundException i) {
+			Error.fileNotFound(objPath);
+		}
 		catch (IOException i) {
 			Error.onSaveObject();
-			return false;
 		}
+
+		return false;
 	}
 
 	/* ---------------------- Manual Action function ----------------------- */
@@ -240,6 +246,7 @@ public class Game {
 		}
 	}
 
+	/* ------------------ Is Enter Command test function ------------------- */
 	private boolean isEnterCommand(String input) {
 		return input.length() == 0;
 	}
