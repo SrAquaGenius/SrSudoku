@@ -23,6 +23,21 @@
                 <configuration>
                     <mainClass>com.game.App</mainClass>
                 </configuration>
+				<executions>
+                    <execution>
+                        <id>clean-objects</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>sh</executable>
+                            <arguments>
+                                <argument>-c</argument>
+                                <argument>find ${project.basedir} -name "*.sst" -exec rm -f {} \;</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
