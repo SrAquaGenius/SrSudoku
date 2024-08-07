@@ -1,7 +1,7 @@
 package com.game.Utils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+// import java.util.regex.Matcher;
+// import java.util.regex.Pattern;
 
 public class Path {
 
@@ -24,18 +24,21 @@ public class Path {
 		if (!input.contains("/"))
 			return DEFAULT_OBJ_PATH + input + OBJ_EXTENTION;
 
+		if (!input.contains(OBJ_EXTENTION))
+			return input + OBJ_EXTENTION;
+
 		return input;
 	}
 
 	/* ----------------- Construct Obj Extention function ------------------ */
-	public static String constructObjExtention(String input) {
+	// public static String constructObjExtention(String input) {
 
-		Pattern pattern = Pattern.compile(Regex.objExtention());
-		Matcher matcher = pattern.matcher(input);
+	// 	Pattern pattern = Pattern.compile(Regex.objExtention());
+	// 	Matcher matcher = pattern.matcher(input);
 
-		if (matcher.matches())
-			return input;
+	// 	if (matcher.matches())
+	// 		return input;
 
-		return input + OBJ_EXTENTION;
-	}
+	// 	return input + OBJ_EXTENTION;
+	// }
 }

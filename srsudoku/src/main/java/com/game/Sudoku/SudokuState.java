@@ -1,8 +1,12 @@
 package com.game.Sudoku;
 
+import java.io.Serializable;
+
 import com.game.Utils.Debug;
 
-public class SudokuState {
+public class SudokuState implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public int _STATE_ID = 0;
 
@@ -34,14 +38,22 @@ public class SudokuState {
 	}
 
 	/* ---------------------------- Operations ----------------------------- */
-	public void addPenDigit(int value, int x, int y) {
-		if (getBoard().addPenDigit(value, x, y))
+	public boolean addPenDigit(int value, int x, int y) {
+		if (getBoard().addPenDigit(value, x, y)) {
 			_id += 1;
+			return true;
+		}
+
+		return false;
 	}
 
-	public void delPenDigit(int x, int y) {
-		if (getBoard().delPenDigit(x, y))
+	public boolean delPenDigit(int x, int y) {
+		if (getBoard().delPenDigit(x, y)) {
 			_id += 1;
+			return true;
+		}
+
+		return false;
 	}
 
 	/* ------------------------ To String function ------------------------- */

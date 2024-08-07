@@ -337,7 +337,7 @@ public class Board implements Serializable {
 		Cell oldCell = _matrix.get(index);
 
 		if (oldCell.isHint()) {
-			Error.overwriteHintCell(oldCell);
+			Warning.overwriteHintCell(oldCell);
 			return false;
 		}
 
@@ -363,7 +363,7 @@ public class Board implements Serializable {
 		Cell oldCell = _matrix.get(index);
 
 		if (oldCell.isHint()) {
-			Error.deleteHintCell(oldCell);
+			Warning.deleteHintCell(oldCell);
 			return false;
 		}
 

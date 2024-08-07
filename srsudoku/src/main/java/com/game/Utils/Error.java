@@ -1,6 +1,5 @@
 package com.game.Utils;
 
-import com.game.Sudoku.Cell;
 import com.game.Sudoku.Coord;
 
 public class Error {
@@ -23,14 +22,6 @@ public class Error {
 	public static void invalidCoord(Coord coord, int size) {
 		System.out.println(error() + "Coordinate " + coord + //
 						 " is invalid for size " + size);
-	}
-
-	public static void overwriteHintCell(Cell cell) {
-		System.out.println(error() + "Couldn't re-write hint cell " + cell);
-	}
-
-	public static void deleteHintCell(Cell cell) {
-		System.out.println(error() + "Couldn't delete hint cell " + cell);
 	}
 
 	/* ------------------------ File related errors ------------------------ */

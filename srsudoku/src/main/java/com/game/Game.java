@@ -25,8 +25,10 @@ public class Game {
 	// private GameWindow gameWindow;
 	// private GamePanel gamePanel;
 
-	private boolean _hasSudoku = false;
 	private Sudoku _sudoku;
+
+	private boolean _isLoaded = false;
+	private boolean _isSaved = false;
 
 	/* ---------------------------- Constructor ---------------------------- */
 	public Game() throws IllegalArgumentException {
@@ -34,22 +36,25 @@ public class Game {
 	}
 
 	/* ------------------------ Game Loop function ------------------------- */
-	public void gameLoop(Scanner sc) {
-		String userInput;
+	public void gameLoop(Scanner scanner) {
 
 		while (true) {
-			Message.nextAction(hasSudoku());
-			userInput = sc.nextLine();
+			Message.nextAction(isSudokuLoaded());
+			String userInput = scanner.nextLine();
 
 			try {
 				int option = Integer.parseInt(userInput);
 
-				if (option == 0) break;
-				else if (option == 1) newSudoku(sc);
-				else if (option == 2) loadSudoku(sc);
-				else if (option == 3) saveSudoku(sc);                
-				else if (option == 4) manualAction(sc);
-				else if (option == 5) autoAction(sc);
+				if (option == 0) {
+					if (isSudokuLoaded() && !isSudokuSaved())
+						saveBeforeExit(scanner);
+					break;
+				}
+				else if (option == 1) newSudoku(scanner);
+				else if (option == 2) loadSudoku(scanner);
+				else if (option == 3) saveSudoku(scanner);                
+				else if (option == 4) manualAction(scanner);
+				else if (option == 5) autoAction(scanner);
 				else Error.invalidOption();
 			}
 			catch (NumberFormatException e) {
@@ -57,21 +62,27 @@ public class Game {
 			}
 		}
 
-		sc.close();
+		scanner.close();
 	}
 
 	/* ------------------------ Getters and setters ------------------------ */
-	public boolean hasSudoku() { return _hasSudoku; }
-	public void setHasSudoku(boolean state) { _hasSudoku = state; }
-
 	public Sudoku getSudoku() { return _sudoku; }
-	public Sudoku setSudoku(Sudoku sudoku) {return this._sudoku = sudoku; } 
+	public Sudoku setSudoku(Sudoku sudoku) { return this._sudoku = sudoku; } 
+
+	public boolean isSudokuLoaded() { return _isLoaded; }
+	public void setSudokuLoadedStatus(boolean state) { _isLoaded = state; }
+
+	public boolean isSudokuSaved() { return _isSaved; }
+	public void setSudokuSavedStatus(boolean state) { _isSaved = state; }
 
 	/* ------------------------ New Sudoku function ------------------------ */
 	public void newSudoku(Scanner scanner) {
 		Debug.place();
 
 		while (true) {
+
+			if (isSudokuLoaded() && !isSudokuSaved()) saveBeforeExit(scanner);
+
 			Message.newSudoku();
 			String newInput = scanner.nextLine();
 
@@ -80,7 +91,8 @@ public class Game {
 			Sudoku sudoku = new Sudoku(newInput);
 
 			if (sudoku.initializeSudoku(Path.constructTxtPath(newInput))) {
-				setHasSudoku(true);
+				setSudokuLoadedStatus(true);
+				setSudokuSavedStatus(false);
 				System.out.println(setSudoku(sudoku));
 				break;
 			}
@@ -92,6 +104,9 @@ public class Game {
 		Debug.place();
 
 		while (true) {
+
+			if (isSudokuLoaded() && !isSudokuSaved()) saveBeforeExit(scanner);
+
 			Message.loadSudoku();
 			String loadInput = scanner.nextLine();
 
@@ -113,7 +128,7 @@ public class Game {
 			Sudoku sudoku = (Sudoku) in.readObject();
 			Message.loadedObject();
 			setSudoku(sudoku);
-			setHasSudoku(true);
+			setSudokuLoadedStatus(true);
 			return true;
 		} 
 		catch (IOException i) {
@@ -125,6 +140,28 @@ public class Game {
 		}
 
 		return false;
+	}
+
+	/* --------------------- Save Before Exit function --------------------- */
+	public void saveBeforeExit(Scanner scanner) {
+		Debug.place();
+
+		while (true) {
+			Message.saveBeforeExit();
+
+			String exitInput = scanner.nextLine();
+
+			if (exitInput.startsWith("y") || exitInput.startsWith("Y")) {
+				saveSudoku(scanner);
+				return;
+			}
+			else if (exitInput.startsWith("n") || exitInput.startsWith("N")) {
+				return;
+			}
+			else {
+				Warning.invalidYNOption();
+			}
+		}
 	}
 
 	/* ----------------------- Save Sudoku function ------------------------ */
@@ -147,10 +184,13 @@ public class Game {
 			}
 			else {
 				Debug.print("Not enter command");
-				path = Path.constructObjExtention(saveInput);
+				path = Path.constructObjPath(saveInput);
 			}
 
-			if (saveSudokuAs(path)) return;
+			if (saveSudokuAs(path)) {
+				setSudokuSavedStatus(true);
+				return;
+			}
 		}
 	}
 
@@ -161,7 +201,7 @@ public class Game {
 
 		File file = new File(objPath);
 		if (file.exists()) {
-			Warning.onDuplicateFile(objPath);
+			Warning.duplicateFile(objPath);
 			return false;
 		}
 
@@ -185,12 +225,11 @@ public class Game {
 
 	/* ---------------------- Manual Action function ----------------------- */
 	public void manualAction(Scanner scanner) {
-		
-		String manualInput;
+		Debug.place();
 		
 		while (true) {
 			Message.manualAction();
-			manualInput = scanner.nextLine();
+			String manualInput = scanner.nextLine();
 
 			try {
 				if (Integer.parseInt(manualInput) == 0)
@@ -213,11 +252,11 @@ public class Game {
 
 	/* ----------------------- Auto Action function ------------------------ */
 	public void autoAction(Scanner scanner) {
-		String autoInput;
+		Debug.place();
 		
 		while (true) {
 			Message.autoAction();
-			autoInput = scanner.nextLine();
+			String autoInput = scanner.nextLine();
 
 			try {
 				if (Integer.parseInt(autoInput) == 0)

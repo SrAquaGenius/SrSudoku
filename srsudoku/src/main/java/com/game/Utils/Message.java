@@ -95,6 +95,14 @@ public class Message {
 		return output;
 	}
 
+	public static String saveBeforeExit() {
+		String output = "[Save Sudoku]\n" +
+						"  do you want to save the actual sudoku? (y/n)\n" + 
+						": ";
+		System.out.print(output);
+		return output;
+	}
+
 	public static String saveSudoku(String name) {
 		String output = "[Save Sudoku]\n" +
 						"  type filename or full path from root\n" +

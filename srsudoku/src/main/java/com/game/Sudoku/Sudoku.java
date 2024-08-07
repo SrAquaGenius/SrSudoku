@@ -122,7 +122,8 @@ public class Sudoku implements Serializable {
 	
 					Debug.print("Coordinates: (" + x + "," + y + ")");
 					Debug.print("Value: " + value);
-					break;
+
+					if (getState().addPenDigit(value, x, y)) break;
 				}
 				
 				else if (Integer.parseInt(addInput) == 0)
@@ -134,43 +135,37 @@ public class Sudoku implements Serializable {
 				Error.invalidPattern();
 			}
 		}
-
-		getState().addPenDigit(value, x, y);
 	}
 
 	public void delPenDigit(Scanner scanner) {
 		Debug.place();
-
-		String delInput;
-		int x, y;
 		
 		while (true) {
 			Message.delPenDigitGuide();
-			delInput = scanner.nextLine();
+			String delInput = scanner.nextLine();
+
+			if (isExitCommand(delInput)) return;
 
 			Pattern pattern = Pattern.compile(Regex.coord());
 			Matcher matcher = pattern.matcher(delInput);
 
 			try {
-				if (matcher.matches()) {
-					x = Integer.parseInt(matcher.group(1));
-					y = Integer.parseInt(matcher.group(2));
-	
-					Debug.print("Coordinates: (" + x + "," + y + ")");
-					break;
+				if (!matcher.matches()) {
+					Error.invalidPattern();
+					continue;
 				}
-	
-				else if (Integer.parseInt(delInput) == 0)
-					return;
-				else Error.invalidPattern();
-			}
 
+				int x = Integer.parseInt(matcher.group(1));
+				int y = Integer.parseInt(matcher.group(2));
+
+				Debug.print("Coordinates: (" + x + "," + y + ")");
+
+				if (getState().delPenDigit(x, y)) break;
+			}
 			catch (NumberFormatException e) {
 				Error.invalidPattern();
-			}			
+			}
 		}
-
-		getState().delPenDigit(x, y);
 	}
 
 	/* ----------------------- Auto Action functions ----------------------- */
@@ -198,5 +193,15 @@ public class Sudoku implements Serializable {
 	/* ------------------------ To String function ------------------------- */
 	public String toString() {
 		return "[Sudoku] name: " + getName() + ", id: " + getState().getId();
+	}
+
+	/* ------------------- Is Exit Command test function ------------------- */
+	private boolean isExitCommand(String input) {
+		try {
+			return Integer.parseInt(input) == 0;
+		}
+		catch (NumberFormatException e) {
+			return false; // Not an integer, thus not an exit command
+		}
 	}
 }
