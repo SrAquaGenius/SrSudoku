@@ -13,6 +13,7 @@ import com.game.Utils.Debug;
 import com.game.Utils.Error;
 import com.game.Utils.Message;
 import com.game.Utils.Regex;
+import com.game.Utils.Commands;
 
 public class Sudoku implements Serializable {
 
@@ -144,7 +145,7 @@ public class Sudoku implements Serializable {
 			Message.delPenDigitGuide();
 			String delInput = scanner.nextLine();
 
-			if (isExitCommand(delInput)) return;
+			if (Commands.isExitCommand(delInput)) return;
 
 			Pattern pattern = Pattern.compile(Regex.coord());
 			Matcher matcher = pattern.matcher(delInput);
@@ -193,15 +194,5 @@ public class Sudoku implements Serializable {
 	/* ------------------------ To String function ------------------------- */
 	public String toString() {
 		return "[Sudoku] name: " + getName() + ", id: " + getState().getId();
-	}
-
-	/* ------------------- Is Exit Command test function ------------------- */
-	private boolean isExitCommand(String input) {
-		try {
-			return Integer.parseInt(input) == 0;
-		}
-		catch (NumberFormatException e) {
-			return false; // Not an integer, thus not an exit command
-		}
 	}
 }

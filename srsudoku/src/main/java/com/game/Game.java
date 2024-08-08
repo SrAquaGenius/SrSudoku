@@ -16,6 +16,7 @@ import com.game.Utils.Error;
 import com.game.Utils.Message;
 import com.game.Utils.Path;
 import com.game.Utils.Warning;
+import com.game.Utils.Commands;
 
 // import com.game.Solver.*;
 // import com.game.Sudoku.Sudoku;
@@ -86,7 +87,7 @@ public class Game {
 			Message.newSudoku();
 			String newInput = scanner.nextLine();
 
-			if (isExitCommand(newInput)) break;
+			if (Commands.isExitCommand(newInput)) break;
 
 			Sudoku sudoku = new Sudoku(newInput);
 
@@ -110,7 +111,7 @@ public class Game {
 			Message.loadSudoku();
 			String loadInput = scanner.nextLine();
 
-			if (isExitCommand(loadInput)) break;
+			if (Commands.isExitCommand(loadInput)) break;
 
 			String path = Path.constructObjPath(loadInput);
 			if (loadSudokuAs(path)) return;
@@ -174,11 +175,11 @@ public class Game {
 
 			String saveInput = scanner.nextLine();
 			
-			if (isExitCommand(saveInput)) return;
+			if (Commands.isExitCommand(saveInput)) return;
 
 			String path;
 
-			if (isEnterCommand(saveInput)) {
+			if (Commands.isEnterCommand(saveInput)) {
 				Debug.print("Enter command");
 				path = Path.constructObjPath(sudokuName);
 			}
@@ -273,20 +274,5 @@ public class Game {
 				Error.invalidInteger();
 			}
 		}
-	}
-
-	/* ------------------- Is Exit Command test function ------------------- */
-	private boolean isExitCommand(String input) {
-		try {
-			return Integer.parseInt(input) == 0;
-		}
-		catch (NumberFormatException e) {
-			return false; // Not an integer, thus not an exit command
-		}
-	}
-
-	/* ------------------ Is Enter Command test function ------------------- */
-	private boolean isEnterCommand(String input) {
-		return input.length() == 0;
 	}
 }
