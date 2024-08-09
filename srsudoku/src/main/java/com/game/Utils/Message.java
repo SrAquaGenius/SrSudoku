@@ -10,7 +10,7 @@ public class Message {
 	}
 
 	public static String nextDefaultAction() {
-		String output = "[Next action]\n" +
+		String output = "[Main menu]\n" +
 						"  0 - exit\n" +
 						"  1 - new sudoku\n" +
 						"  2 - load sudoku\n" +
@@ -23,7 +23,7 @@ public class Message {
 	}
 
 	public static String nextInitAction() {
-		String output = "[Next action]\n" +
+		String output = "[Main menu]\n" +
 						"  0 - exit\n" +
 						"  1 - new sudoku\n" +
 						"  2 - load sudoku\n" +
@@ -37,7 +37,7 @@ public class Message {
 						"  0 - back\n" +
 						"  1 - add pen digit\n" +
 						"  2 - delete pen digit\n" +
-						"  3 - show board\n" +
+						"  3 - show cell\n" +
 						": ";
 		System.out.print(output);
 		return output;
@@ -64,6 +64,15 @@ public class Message {
 	
 	public static String delPenDigitGuide() {
 		String output = "[Delete pen digit]\n" +
+						"  type <coord>, eg.: (1,3)\n" +
+						"  0 - cancel\n" +
+						": ";
+		System.out.print(output);
+		return output;
+	}
+
+	public static String showCellGuide() {
+		String output = "[Show Cell]\n" +
 						"  type <coord>, eg.: (1,3)\n" +
 						"  0 - cancel\n" +
 						": ";

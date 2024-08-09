@@ -72,13 +72,28 @@ public class Board implements Serializable {
 
 	public List<Cell> getMatrix() { return _matrix; }
 	public void setMatrix(ArrayList<Cell> matrix) { this._matrix = matrix; }
-
+	
 	public List<Integer> getDigits() { return _remainDigits; }
 	public void setDigits(List<Integer> digits) { this._remainDigits = digits; }
-
+	
 	public BoardOptions getOptions() { return _options; }
 	public void setOptions(BoardOptions options) { this._options = options; }
+	
+	/* --------------------------------------------------------------------- */
+	public Cell getCell(int row, int col) {
+		Debug.place();
 
+		Coord coord = new Coord(row, col);
+		if (!coord.isValid(getSize())) {
+			Error.invalidCoord(coord, getSize());
+			return null;
+		}
+
+		int index = coordToIndex(coord);
+		return _matrix.get(index);
+	}
+
+	/* --------------------------------------------------------------------- */
 	public Coord indexToNewCoord(int index, int size) {
 
 		int row = index / size;
@@ -221,7 +236,7 @@ public class Board implements Serializable {
 		for (int m = 0; m < getSize()*getSize() - 1; m++) {
 			Cell cell = _matrix.get(m);
 
-			// App.debug(cell.toString());
+			Debug.print(cell.toString());
 
 			if (!cell.isFilled()) { continue; }
 
@@ -230,7 +245,7 @@ public class Board implements Serializable {
 	}
 
 	public void propagateDigit(Cell cell) {
-		// App.debug("Propagate digit: " + cell);
+		Debug.print("[Propagate digit] cell " + cell);
 
 		Coord coord = cell.getCoord();
 		List<Cell> cellsVisited = new ArrayList<Cell>();
@@ -241,7 +256,7 @@ public class Board implements Serializable {
 	}
 
 	public void propagateInBox(List<Cell> cellsVisited, int box, int digit) {
-		// App.debug("Propagate in box (box: " + box + ", digit: " + digit + "):");
+		Debug.print("[Propagate in box] " + box + ", " + digit);
 
 		if (box == 0) return;
 
@@ -267,7 +282,7 @@ public class Board implements Serializable {
 	}
 
 	public void propagateInRow(List<Cell> cellsVisited, int row, int digit) {
-		// App.debug("Propagate int row (row: " + row + ", digit: " + digit + "):");
+		Debug.print("[Propagate in row] " + row + ", " + digit);
 
 		for (int i = 0; i < getSize(); i++) {
 
@@ -282,7 +297,7 @@ public class Board implements Serializable {
 	}
 
 	public void propagateInCol(List<Cell> cellsVisited, int col, int digit) {
-		// App.debug("Propagate in col (col: " + col + ", digit: " + digit + "):");
+		Debug.print("[Propagate in col] " + col + ", " + digit);
 
 		for (int j = 0; j < getSize(); j++) {
 
@@ -302,7 +317,7 @@ public class Board implements Serializable {
 		for (int m = 0; m < getSize()*getSize() - 1; m++) {
 			Cell cell = _matrix.get(m);
 
-			// App.debug(cell.toString());
+			Debug.print(cell.toString());
 
 			if (cell.isFilled()) { continue; }
 			if (cell.getValidDigits() == null) { continue; }
@@ -347,9 +362,11 @@ public class Board implements Serializable {
 		
 		Cell newCell = new Cell(coord, "" + digit, getSize(), false);
 		_matrix.set(index, newCell);
+		propagateDigit(newCell);
 		return true;
 	}
 
+	/* --------------------- Delete Pen Digit function --------------------- */
 	public boolean delPenDigit(int row, int col) {
 		Debug.place();
 
@@ -372,6 +389,7 @@ public class Board implements Serializable {
 			return true;
 		}
 
+		// desPropagateDigit(oldCell);
 		Cell newCell = new Cell(coord, ".", getSize(), false);
 		_matrix.set(index, newCell);
 		return true;

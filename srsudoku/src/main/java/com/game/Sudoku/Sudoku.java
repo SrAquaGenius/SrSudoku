@@ -104,22 +104,18 @@ public class Sudoku implements Serializable {
 	public void addPenDigit(Scanner scanner) {
 		Debug.place();
 		
-		String addInput;
-
-		int x, y, value;
-		
 		while (true) {
 			Message.addPenDigitGuide();
-			addInput = scanner.nextLine();
+			String addInput = scanner.nextLine();
 
 			Pattern pattern = Pattern.compile(Regex.coordDigit());
 			Matcher matcher = pattern.matcher(addInput);
 
 			try {
 				if (matcher.matches()) {
-					x = Integer.parseInt(matcher.group(1));
-					y = Integer.parseInt(matcher.group(2));
-					value = Integer.parseInt(matcher.group(3));
+					int x = Integer.parseInt(matcher.group(1));
+					int y = Integer.parseInt(matcher.group(2));
+					int value = Integer.parseInt(matcher.group(3));
 	
 					Debug.print("Coordinates: (" + x + "," + y + ")");
 					Debug.print("Value: " + value);
@@ -163,6 +159,37 @@ public class Sudoku implements Serializable {
 
 				if (getState().delPenDigit(x, y)) break;
 			}
+			catch (NumberFormatException e) {
+				Error.invalidPattern();
+			}
+		}
+	}
+
+	public void showCell(Scanner scanner) {
+		Debug.place();
+
+		while (true) {
+			Message.showCellGuide();
+			String showCellInput = scanner.nextLine();
+
+			Pattern pattern = Pattern.compile(Regex.coord());
+			Matcher matcher = pattern.matcher(showCellInput);
+
+			try {
+				if (matcher.matches()) {
+					int x = Integer.parseInt(matcher.group(1));
+					int y = Integer.parseInt(matcher.group(2));
+	
+					Debug.print("Coordinates: (" + x + "," + y + ")");
+
+					if (getState().showCell(x,y)) break;
+				}
+				
+				else if (Integer.parseInt(showCellInput) == 0)
+					return;
+				else Error.invalidPattern();
+			}
+
 			catch (NumberFormatException e) {
 				Error.invalidPattern();
 			}

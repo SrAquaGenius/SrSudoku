@@ -56,6 +56,16 @@ public class SudokuState implements Serializable {
 		return false;
 	}
 
+	public boolean showCell(int x, int y) {
+		Cell cell = getBoard().getCell(x, y);
+		if (cell != null) {
+			System.out.println(cell);
+			return true;
+		}
+
+		return false;
+	}
+
 	/* ------------------------ To String function ------------------------- */
 	@Override
 	public String toString() {

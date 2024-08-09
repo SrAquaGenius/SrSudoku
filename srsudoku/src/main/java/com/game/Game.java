@@ -232,6 +232,7 @@ public class Game {
 		
 		while (true) {
 			// Commands.clearScreen();
+			System.out.println(getSudoku().getState());
 			Message.manualAction();
 			String manualInput = scanner.nextLine();
 
@@ -243,7 +244,7 @@ public class Game {
 				else if (Integer.parseInt(manualInput) == 2)
 					getSudoku().delPenDigit(scanner);
 				else if (Integer.parseInt(manualInput) == 3)
-					System.out.println(getSudoku().getState());
+					getSudoku().showCell(scanner);
 
 				else Error.invalidOption();
 			}

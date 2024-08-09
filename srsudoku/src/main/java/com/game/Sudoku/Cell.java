@@ -6,21 +6,24 @@ import java.util.List;
 
 import com.game.Sudoku.Options.CellOptions;
 
+import com.game.Utils.Debug;
+
 public class Cell implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Coord _coord;
+	private int _digit = 0;
 
 	private boolean _isHint = false;
 	private boolean _isFilled = false;
-	private int _digit = 0;
+	private boolean _beenVisited = false;
+
+	private List<Integer> _pencilDigits = null;
 
 	private List<Integer> _validDigits = null;
 
 	private CellOptions _options;
-
-	private boolean _beenVisited = false;
 
 	/* -----------------------------Constructor----------------------------- */
 	public Cell(Coord coord, String content, int size, boolean isHint) {
@@ -39,6 +42,8 @@ public class Cell implements Serializable {
 			for (int i = 1; i <= size; i++)
 				_validDigits.add(i);
 		}
+
+		_pencilDigits = new ArrayList<Integer>(size);
 	}
 
 	/* ------------------- Getters and setters functions ------------------- */
@@ -49,7 +54,7 @@ public class Cell implements Serializable {
 	public boolean isFilled() { return _isFilled; }
 
 	public boolean beenVisited() { return _beenVisited; }
-	public void changeVisibility() { _beenVisited = !_beenVisited; }
+	public void toggleVisibility() { _beenVisited = !_beenVisited; }
 
 	public int getDigit() { return _digit; }
 	public void setDigit(int digit) { this._digit = digit; }
@@ -57,6 +62,7 @@ public class Cell implements Serializable {
 	public String getContent() { return (isFilled()) ? "" + getDigit() : "."; }
 
 	public List<Integer> getValidDigits() { return _validDigits; }
+	public List<Integer> getPencilDigits() { return _pencilDigits; }
 
 	public CellOptions getOptions() { return _options; }
 	public void setOptions(CellOptions options) { this._options = options; }
@@ -112,6 +118,41 @@ public class Cell implements Serializable {
 	/* ------------------------ To String function ------------------------- */
 	@Override
 	public String toString() {
-		return getCoord() + ": " + getContent();
+		String text = "[Cell] " + getCoord() + ": " + getContent();
+
+		text += "\n  Is hint cell? " + isHint() +
+				"\n  Is cell filled? " + isFilled();
+
+		if (!isFilled()) {
+
+			text += "\n  Annotated digits: ";
+
+			if (getPencilDigits().size() == 0) {
+				text += "empty list";
+			}
+			else {
+				text += listToString(getPencilDigits());
+			}
+
+			text += "\n  Possible digits: " + listToString(getValidDigits());
+		}
+
+		return text;
+	}
+
+	/* ---------------------- List To String function ---------------------- */
+	private String listToString(List<Integer> list) {
+		Debug.place();
+
+		String str = "";
+
+		for (int i = 0; i < list.size(); i++) {
+			str += list.get(i);
+
+			if (i < list.size() - 1)
+				str += ", ";
+		}
+
+		return str;
 	}
 }
