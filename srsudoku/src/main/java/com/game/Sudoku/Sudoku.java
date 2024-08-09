@@ -42,7 +42,6 @@ public class Sudoku implements Serializable {
 			if (!parseInput(path, state))
 				return false;
 
-			Debug.print(state.getBoard().print());
 			setState(state);
 			return true;
 		}
@@ -199,18 +198,12 @@ public class Sudoku implements Serializable {
 	/* ----------------------- Auto Action functions ----------------------- */
 	public void nextIteration() {
 		Debug.todo();
-		// _id += 1;
-		// getBoard().nextIteration();
+		getState().nextIteration();
 	}
 
 	public void fullGeneration() {
 		Debug.todo();
-		// boolean eval = true;
-
-		// while (eval) {
-		// 	_id += 1;
-		// 	eval = getBoard().nextIteration();
-		// }
+		getState().fullGeneration();
 	}
 
 	/* -------------------------- Solve function --------------------------- */

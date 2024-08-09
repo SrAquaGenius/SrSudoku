@@ -85,6 +85,7 @@ public class Cell implements Serializable {
 
 	/* -------------------- Remove valid digit function -------------------- */
 	public void removeValidDigit(int digit) {
+		Debug.print("[Remove Valid Digit] " + digit + " from " + print(false));
 
 		// String debug = "Remove: " + this + " " + digit + " [";
 
@@ -110,29 +111,34 @@ public class Cell implements Serializable {
 		this._isFilled = true;
 	}
 
+	/* ------------------------ Print Base function ------------------------ */
+	public String printBase() {
+		return "[Cell] " + getCoord() + ": " + getContent();
+	}
+
 	/* -------------------------- Print function --------------------------- */
-	public String print(boolean showCoord) {
-		return (showCoord) ? getCoord() + ": " + getContent() : getContent();
+	public String print(boolean verbose) {
+		return (verbose) ? this.toString() : this.printBase();
 	}
 
 	/* ------------------------ To String function ------------------------- */
 	@Override
 	public String toString() {
-		String text = "[Cell] " + getCoord() + ": " + getContent();
+		String text = printBase();
 
 		text += "\n  Is hint cell? " + isHint() +
 				"\n  Is cell filled? " + isFilled();
 
 		if (!isFilled()) {
 
-			text += "\n  Annotated digits: ";
+			// text += "\n  Annotated digits: ";
 
-			if (getPencilDigits().size() == 0) {
-				text += "empty list";
-			}
-			else {
-				text += listToString(getPencilDigits());
-			}
+			// if (getPencilDigits().size() == 0) {
+			// 	text += "empty list";
+			// }
+			// else {
+			// 	text += listToString(getPencilDigits());
+			// }
 
 			text += "\n  Possible digits: " + listToString(getValidDigits());
 		}

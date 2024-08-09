@@ -261,6 +261,7 @@ public class Game {
 		
 		while (true) {
 			// Commands.clearScreen();
+			System.out.println(getSudoku().getState());
 			Message.autoAction();
 			String autoInput = scanner.nextLine();
 

@@ -128,17 +128,16 @@ public class Board implements Serializable {
 	public int getBoxIndex(int boxNumber) {
 
 		int TWO_BOX_SIZE = 2 * BOX_SIZE;
-
 		if (boxNumber <= 0) { return -1; }
 
 		if (boxNumber <= BOX_SIZE * 1) {
 			return BOX_SIZE * (boxNumber - 1);
 		}
 		if (boxNumber <= BOX_SIZE * 2) {
-			return BOX_SIZE * (boxNumber % BOX_SIZE - 1) + BOX_SIZE * getSize();
+			return BOX_SIZE * (boxNumber % (BOX_SIZE + 1)) + BOX_SIZE * getSize();
 		}
 		if (boxNumber <= BOX_SIZE * 3) {
-			return BOX_SIZE * (boxNumber % TWO_BOX_SIZE - 1) + TWO_BOX_SIZE * getSize();
+			return BOX_SIZE * (boxNumber % (TWO_BOX_SIZE + 1)) + TWO_BOX_SIZE * getSize();
 		}
 
 		else { return -1; }
@@ -245,7 +244,7 @@ public class Board implements Serializable {
 	}
 
 	public void propagateDigit(Cell cell) {
-		Debug.print("[Propagate digit] cell " + cell);
+		Debug.print("[Propagate digit] " + cell.print(false));
 
 		Coord coord = cell.getCoord();
 		List<Cell> cellsVisited = new ArrayList<Cell>();
@@ -255,21 +254,20 @@ public class Board implements Serializable {
 		propagateInCol(cellsVisited, coord.getCol(), cell.getDigit());
 	}
 
+	/* --------------------- Propagate In Box function --------------------- */
 	public void propagateInBox(List<Cell> cellsVisited, int box, int digit) {
-		Debug.print("[Propagate in box] " + box + ", " + digit);
-
-		if (box == 0) return;
+		Debug.print("[Propagate in box] box " + box + ", digit " + digit);
 
 		int base = getBoxIndex(box);
 		if (base < 0) return;
 
-		int index;
-
 		for (int i = 0; i < BOX_SIZE; i ++) {
 			for (int j = 0; j < BOX_SIZE; j++) {
 
-				index = base + i + j * getSize();
+				int index = base + i + j * getSize();
 				Cell testCell = getMatrix().get(index);
+
+				Debug.print("index " + index + " " + testCell.print(false));
 
 				if (testCell.isIn(cellsVisited)) continue;
 
@@ -281,8 +279,9 @@ public class Board implements Serializable {
 		}
 	}
 
+	/* --------------------- Propagate In Row function --------------------- */
 	public void propagateInRow(List<Cell> cellsVisited, int row, int digit) {
-		Debug.print("[Propagate in row] " + row + ", " + digit);
+		Debug.print("[Propagate in row] row " + row + ", digit " + digit);
 
 		for (int i = 0; i < getSize(); i++) {
 
@@ -296,8 +295,9 @@ public class Board implements Serializable {
 		}
 	}
 
+	/* --------------------- Propagate In Col function --------------------- */
 	public void propagateInCol(List<Cell> cellsVisited, int col, int digit) {
-		Debug.print("[Propagate in col] " + col + ", " + digit);
+		Debug.print("[Propagate in col] col " + col + ", digit " + digit);
 
 		for (int j = 0; j < getSize(); j++) {
 
@@ -317,7 +317,7 @@ public class Board implements Serializable {
 		for (int m = 0; m < getSize()*getSize() - 1; m++) {
 			Cell cell = _matrix.get(m);
 
-			Debug.print(cell.toString());
+			Debug.print(cell.print(true));
 
 			if (cell.isFilled()) { continue; }
 			if (cell.getValidDigits() == null) { continue; }
@@ -326,7 +326,7 @@ public class Board implements Serializable {
 
 			if (digits.size() == 1) {
 
-				Debug.print(cell.toString() + " " + digits.get(0));
+				Debug.print("Choose cell: " + cell.print(false));
 
 				cell.updateDigit();
 				_matrix.set(m, cell);
@@ -410,20 +410,7 @@ public class Board implements Serializable {
 			if (i != 0 && i % (3*_size) == 0)
 				text += "---+---+---\n";
 
-			text += _matrix.get(i).print(showCoord);
-		}
-
-		return text;
-	}
-
-	public String print() {
-
-		String text = "\nPrint board:\n";
-
-		for (int i = 0; i < _size*_size; i++) {
-
-			Cell cell = _matrix.get(i);
-			text += cell.print(true) + " - " + cell.getValidDigits() + "\n";
+			text += _matrix.get(i).getContent();
 		}
 
 		return text;

@@ -66,6 +66,23 @@ public class SudokuState implements Serializable {
 		return false;
 	}
 
+	/* ----------------------- Auto Action functions ----------------------- */
+	public void nextIteration() {
+		Debug.place();
+		getBoard().nextIteration();
+		_id += 1;
+	}
+
+	public void fullGeneration() {
+		Debug.place();
+		boolean eval = true;
+
+		while (eval) {
+			_id += 1;
+			eval = getBoard().nextIteration();
+		}
+	}
+
 	/* ------------------------ To String function ------------------------- */
 	@Override
 	public String toString() {
