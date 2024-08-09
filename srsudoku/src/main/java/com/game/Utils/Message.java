@@ -37,7 +37,7 @@ public class Message {
 						"  0 - back\n" +
 						"  1 - add pen digit\n" +
 						"  2 - delete pen digit\n" +
-						"  3 - print board\n" +
+						"  3 - show board\n" +
 						": ";
 		System.out.print(output);
 		return output;

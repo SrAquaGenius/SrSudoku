@@ -30,6 +30,9 @@ public class Debug {
 	}
 
 	public static void show(Object obj) {
+		if (!Boolean.parseBoolean(System.getProperty("debug")))
+			return;
+
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 		StackTraceElement caller = stackTrace[2];
 		
@@ -39,6 +42,9 @@ public class Debug {
 	}
 
 	public static void todo() {
+		if (!Boolean.parseBoolean(System.getProperty("debug")))
+			return;
+
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 		StackTraceElement caller = stackTrace[2];
 		
@@ -48,6 +54,9 @@ public class Debug {
 	}
 
 	public static void todoMsg(String msg) {
+		if (!Boolean.parseBoolean(System.getProperty("debug")))
+			return;
+
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 		StackTraceElement caller = stackTrace[2];
 		

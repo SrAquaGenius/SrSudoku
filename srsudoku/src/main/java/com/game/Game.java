@@ -38,6 +38,8 @@ public class Game {
 
 	/* ------------------------ Game Loop function ------------------------- */
 	public void gameLoop(Scanner scanner) {
+		Debug.place();
+		Commands.clearScreen();
 
 		while (true) {
 			Message.nextAction(isSudokuLoaded());
@@ -229,6 +231,7 @@ public class Game {
 		Debug.place();
 		
 		while (true) {
+			// Commands.clearScreen();
 			Message.manualAction();
 			String manualInput = scanner.nextLine();
 
@@ -256,6 +259,7 @@ public class Game {
 		Debug.place();
 		
 		while (true) {
+			// Commands.clearScreen();
 			Message.autoAction();
 			String autoInput = scanner.nextLine();
 
